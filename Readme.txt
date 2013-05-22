@@ -10,3 +10,7 @@ UNIVERSIDAD DE GRANADA
 El objetivo es uso de:
 - MySQL  / Python
 - GTK    / Python
+
+Ficheros:
+CRUD_Main_FJBecerra.py -> Código Python
+CRUD_Main_FJBecerra.glade -> Código XML Interfaz
