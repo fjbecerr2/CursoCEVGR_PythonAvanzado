@@ -12,5 +12,13 @@ El objetivo es uso de:
 - GTK    / Python
 
 Ficheros:
-CRUD_Main_FJBecerra.py -> Código Python
+-------
+Python
+--------
+CRUD_Main_FJBecerra.py -> Código Python aplicación
+clssConectMySQL.py -> Código para MySQL
+
+---
+XML
+---
 CRUD_Main_FJBecerra.glade -> Código XML Interfaz

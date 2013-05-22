@@ -7,7 +7,7 @@
 # Centro: CEVUG
 # Autor: Fco. J. Becerra
 # email: fjbecerr@gmail.com
-# Fecha: 15/05/2013
+# Fecha: 22/05/2013
 # Operativa: Uso de la GTK y Glade para crear un interfaz gráfico
 
 import pygtk
