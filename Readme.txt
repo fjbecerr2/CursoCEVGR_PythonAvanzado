@@ -16,6 +16,7 @@ Ficheros:
 Python
 --------
 CRUD_Main_FJBecerra.py -> Código Python aplicación
+CRUD_GTK_FJBecerra.py -> Código Interfaz GTK
 clssConectMySQL.py -> Código para MySQL
 
 ---

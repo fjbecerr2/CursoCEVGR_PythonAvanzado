@@ -1,4 +1,4 @@
-# coding: UTF-8 
+﻿# coding: UTF-8 
 # Python Version: 2.7.3
 # Fichero: clssConectMySQL_FJBecerra.py
 # Versión: 1.5
@@ -7,7 +7,7 @@
 # Centro: CEVUG
 # Autor: Fco. J. Becerra
 # email: fjbecerr@gmail.com
-# Fecha: 22/05/2013
+# Fecha: 23/05/2013
 # Operativa: Crea una clase para conectar a una base de datos MySQL
 
 import MySQLdb #Importar libreria
@@ -15,29 +15,31 @@ import MySQLdb #Importar libreria
 # Clase: clssConectMySQL
 # Uso: Clase para operación de conexión a MySQL
 class clssConectMySQL:
-    # Constructor
-    # Asigna los parámetros para una conexión y una query
-	# Estado [D]esarrollo/[O]perativa: O	
-    def __init__(self,ConectData=[]):
-        self.Myhost = ConectData[0]
-        self.Mydb = ConectData[1]
-        self.Myuser = ConectData[2]
-        self.Mypassw = ConectData[3]
-        self.MyTabla = ConectData[4]
-        self.MyQuery = " "
-        self.MyID = 0 # Valor inicial
-        print "Estableciendo parametros de conexion: "
-        print "------------------------------------- "
-        print "- HOST  \t: " + ConectData[0]
-        print "- DB    \t: " + ConectData[1]
-        print "- USER  \t: " + ConectData[2]
-        print "- TABLE \t: " + ConectData[4]
     
-		# Descripcion: Establece una conexión MySQL
-        print "----------------------------------"		
-        print " --- Estableciendo la conexion ---"
-        print "----------------------------------"
-        self.MyConexion = MySQLdb.connect(host=self.Myhost, user=self.Myuser, passwd=self.Mypassw, db=self.Mydb)
+	# Constructor
+	# since :	 1.0
+	# Estado [D]esarrollo/[O]perativa: D	
+	# author :
+    # uso : 	Asigna los parámetros para una conexión y una query
+	# param :	
+	#	ConectData=[] -> Parámentros de la conexión
+	# return : 	False / True (Error Conexión / Correcta)		
+    def __init__(self,ConectData=[]):
+		# Comprobar el número de elementos
+		if len(ConectData)<5:
+			return False
+		else:	
+			# Estableciendo parametros de conexion
+			self.Myhost = ConectData[0]
+			self.Mydb = ConectData[1]
+			self.Myuser = ConectData[2]
+			self.Mypassw = ConectData[3]
+			self.MyTabla = ConectData[4]
+			self.MyQuery = " "
+			self.MyID = 0 # Valor inicial    
+			# Descripcion: Establece una conexión MySQL
+			self.MyConexion = MySQLdb.connect(host=self.Myhost, user=self.Myuser, passwd=self.Mypassw, db=self.Mydb)
+			return True 
 
     # Función: func_Desconectar
     # Descripcion: Desconectar la conexión
