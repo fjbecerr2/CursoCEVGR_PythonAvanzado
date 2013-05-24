@@ -1,7 +1,7 @@
 # coding: UTF-8 
 # Python Version: 2.7.3
 # Fichero: clssConectMySQL_FJBecerra.py
-# Versión: 1.5
+# Versión: 1.7
 # Ejercicio: Ejercicio 1 - Programación Avanzada - Víctimas de... 
 # Curso: Programación avanzada en Python
 # Centro: CEVUG
@@ -27,22 +27,19 @@ class clssConectMySQL:
     def __init__(self,ConectData=[]):
         """Realiza la conexión a una BBDD MySQL. Toma como parametros
         los datos de conexión con tupla [Host,DB,User,Password,Tabla]."""
-        self.Version = "1.5" # Versión Activa
+        self.Version = "1.7" # Versión Activa
         # Comprobar el número de elementos
-        if len(ConectData)<5:
-            return False
-        else:   
-            # Estableciendo parametros de conexion
-            self.Myhost = ConectData[0]
-            self.Mydb = ConectData[1]
-            self.Myuser = ConectData[2]
-            self.Mypassw = ConectData[3]
-            self.MyTabla = ConectData[4]
-            self.MyQuery = " "
-            self.MyID = 0 # Valor inicial    
-            # Descripcion: Establece una conexión MySQL
-            self.MyConexion = MySQLdb.connect(host=self.Myhost, user=self.Myuser, passwd=self.Mypassw, db=self.Mydb)
-            return True 
+        # Estableciendo parametros de conexion
+        self.Myhost = ConectData[0]
+        self.Mydb = ConectData[1]
+        self.Myuser = ConectData[2]
+        self.Mypassw = ConectData[3]
+        self.MyTabla = ConectData[4]
+        self.MyQuery = " "
+        self.MyID = 0 # Valor inicial    
+        # Descripcion: Establece una conexión MySQL
+        self.MyConexion = MySQLdb.connect(host=self.Myhost, user=self.Myuser, passwd=self.Mypassw, db=self.Mydb)
+         
 
     # Función:  func_Desconectar
     # author :
@@ -269,12 +266,20 @@ class clssConectMySQL:
 
         return campoVacio        
             
-    # Función:  func_Listar_Tablas
+    # Función:  func_RecuperarTablas
     # author :
-    # Estado [D]esarrollo/[O]perativa: O    
-    # since :   1.5             
+    # Estado [D]esarrollo/[O]perativa: D   
+    # since :   1.7             
     # uso   :   Listar las tablas disponibles
-    def func_Listar_Tablas(self):
-        """Muestra las tablas disponibles en una BBDD."""
-        for (table_name,) in self.MyCursor:
-            print(table_name)
+    # return :  Devuelve una Lista con las tablas disponibles
+    def func_RecuperarTablas(self):
+        """Muestra las tablas disponibles en una BBDD. Devuelve una lista
+        con las tablas disponibles"""
+        TablasSQL = []
+        self.MyCursor.execute('SHOW TABLES;') # Pasar las tablas al cursor
+        for TablasTemp in self.MyCursor:
+            for TablaTemp in TablasTemp:
+                TablasSQL.append(TablaTemp) # Añadir cada tabla
+            
+        TablasSQL.sort() # Ordenar
+        return TablasSQL   

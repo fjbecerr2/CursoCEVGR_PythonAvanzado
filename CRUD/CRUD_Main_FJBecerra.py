@@ -2,7 +2,7 @@
 # coding: UTF-8 
 # Python Version: 2.7.3
 # Ejercicio: CRUD_Main_FJBecerra.py
-# Versión: 0.5.2
+# Versión: 0.5.7
 # Curso: Programación avanzada en Python
 # Centro: CEVUG
 # Autor: Fco. J. Becerra
