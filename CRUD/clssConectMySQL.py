@@ -1,7 +1,7 @@
 # coding: UTF-8 
 # Python Version: 2.7.3
 # Fichero: clssConectMySQL_FJBecerra.py
-# Versión: 1.7
+# Versión: 1.8
 # Ejercicio: Ejercicio 1 - Programación Avanzada - Víctimas de... 
 # Curso: Programación avanzada en Python
 # Centro: CEVUG
@@ -27,7 +27,7 @@ class clssConectMySQL:
     def __init__(self,ConectData=[]):
         """Realiza la conexión a una BBDD MySQL. Toma como parametros
         los datos de conexión con tupla [Host,DB,User,Password,Tabla]."""
-        self.Version = "1.7" # Versión Activa
+        self.Version = "1.8" # Versión Activa
         # Comprobar el número de elementos
         # Estableciendo parametros de conexion
         self.Myhost = ConectData[0]
@@ -282,4 +282,21 @@ class clssConectMySQL:
                 TablasSQL.append(TablaTemp) # Añadir cada tabla
             
         TablasSQL.sort() # Ordenar
-        return TablasSQL   
+        return TablasSQL
+		
+    # Función:  func_CrearTabla
+    # author :
+    # Estado [D]esarrollo/[O]perativa: D   
+    # since :   1.8             
+    # uso   :   Listar las tablas disponibles
+	# param :   
+	#	Tabla - Nombre de la nueva tabla
+	#	SQLScript - Definición de los campos
+    # return :  False / True (Error/Correcto)
+    def func_CrearTabla(self, Tabla, SQLScript):
+        """Crear una nueva tabla en la base de datos. Se le pasa el nombre
+	de la nueva tabla y los campos. Ejemplo:
+	func_CrearTabla(TablaPrueba","id INT, Nombre VARCHAR(100),DNI VARCHAR(20)")."""
+        SQLTemp = "CREATE TABLE " + Tabla + " ("
+        SQLTemp += SQLScript + "); "
+        self.MyCursor.execute(SQLTemp)
