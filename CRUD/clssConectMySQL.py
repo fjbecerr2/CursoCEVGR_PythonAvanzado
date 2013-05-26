@@ -1,7 +1,7 @@
 # coding: UTF-8 
 # Python Version: 2.7.3
 # Fichero: clssConectMySQL_FJBecerra.py
-# Versión: 1.8
+# Versión: 1.9
 # Ejercicio: Ejercicio 1 - Programación Avanzada - Víctimas de... 
 # Curso: Programación avanzada en Python
 # Centro: CEVUG
@@ -27,7 +27,7 @@ class clssConectMySQL:
     def __init__(self,ConectData=[]):
         """Realiza la conexión a una BBDD MySQL. Toma como parametros
         los datos de conexión con tupla [Host,DB,User,Password,Tabla]."""
-        self.Version = "1.8" # Versión Activa
+        self.Version = "1.9" # Versión Activa
         # Comprobar el número de elementos
         # Estableciendo parametros de conexion
         self.Myhost = ConectData[0]
@@ -36,9 +36,10 @@ class clssConectMySQL:
         self.Mypassw = ConectData[3]
         self.MyTabla = ConectData[4]
         self.MyQuery = " "
-        self.MyID = 0 # Valor inicial    
+        self.MyID = 0 # Valor inicial
+        self.MyNewR = False # Controla si estamos insertando un registro
         # Descripcion: Establece una conexión MySQL
-        self.MyConexion = MySQLdb.connect(host=self.Myhost, user=self.Myuser, passwd=self.Mypassw, db=self.Mydb)
+        self.MyConexion = MySQLdb.connect(host=self.Myhost, user=self.Myuser, passwd=self.Mypassw, db=self.Mydb)       
          
 
     # Función:  func_Desconectar
@@ -82,8 +83,9 @@ class clssConectMySQL:
     def func_Insertar(self, SQLTabla, SQLCampos = [], SQLDatos = []):
         """Genera una query INSERT... Se le pasan: el nombre de la tabla, 
         los nombres de campos como una tupla y los datos como otra tupla."""
+        self.MyNewR = True # Nuevo registro en inserción
         self.MyQuery = "INSERT INTO " + SQLTabla + "("        
-    # Ajustar el formato a un query añadiendo comillas "" y comas "," a los campos
+        # Ajustar el formato a un query añadiendo comillas "" y comas "," a los campos
         CamposMyQuery = self.func_ComponerSQL(SQLCampos,0)
         ValoresMyQuery = self.func_ComponerSQL(SQLDatos,1)
 
@@ -114,14 +116,14 @@ class clssConectMySQL:
         campoTemp = ""  # Temporal para la composición
         ultimoCampo = False # Detecta si alcanzamos el último campo
         longitud = 0 # Controlar el nº de campos en operación
-    # Añadir las comillas
+        # Añadir las comillas
         for campo in Campos:
             if str(type(campo)) == "<type \'str\'>" and Campo_o_Valor == 1:
                 campoTemp = "\"" + campo + "\""
             else:
                 campoTemp = str(campo) # No añadimos ajuste, campos no str (numérico)
             
-        # Existen varios campos y no estamos en el último
+            # Existen varios campos y no estamos en el último
             if len(Campos)>0 and ultimoCampo == False: 
                 campoTemp += ","
                 longitud = longitud + 1 # Sumar el campo al control
@@ -146,6 +148,7 @@ class clssConectMySQL:
     def func_Seleccionar(self, SQLTabla, SQLCampos, SQLWhere):
         """Compone una query SELECT... Se la pasan: el nombre de la tabla, 
         los campos y la condición de WHERE."""
+        self.MyNewR = False # Registro en selección
         self.MyQuery = "SELECT " + SQLCampos
         self.MyQuery += " FROM " + SQLTabla
         self.MyQuery += " WHERE " + SQLWhere
@@ -202,7 +205,8 @@ class clssConectMySQL:
     # Función:  func_ControlarID
     # author :
     # Estado [D]esarrollo/[O]perativa: O    
-    # since :   1.0             
+    # since :   1.0
+    # update:   1.9
     # uso   :   Devolver siguiente valor de ID
     # return :  Valor calculado del nuevo ID
     def func_ControlarID(self):
@@ -214,13 +218,11 @@ class clssConectMySQL:
         registrosTemp = self.MyCursor.fetchone()
         nregistrosTemp = self.MyCursor.rowcount
         if nregistrosTemp == 0 : # No hay registros y se genera el índice desde 0
-            self.MyID += 1 # Usar un variable para inicializar la tabla
-            print "-- No se encontraron registros previos en la tabla"
-            print "-- Se inicilizara el indice "            
+           self.MyID += 1 # Usar un variable para inicializar la tabla          
         else: # Hay registros previos            
-            self.MyID = registrosTemp[0]            
-            #self.MyID = self.MyID[0] 
-            self.MyID += 1           
+           self.MyID = registrosTemp[0]                       
+           self.MyID += 1           
+            
 
         return self.MyID
 
@@ -244,6 +246,7 @@ class clssConectMySQL:
         """Genera registros en número igual al argumento pasado."""
         for n in range(nReg):
              # Asignamos los valores para la consulta
+            self.MyNewR = True # Nuevos registros en inserción
             SQLCampos = "id", "Nombre", "Profesion", "Muerte"
             SQLDatos = self.func_ControlarID(), "Zombies"+str(n),"Muertos Vivientes"+str(n),"Desmembramiento a espada"+str(n)
             self.func_Insertar(self.MyTabla, SQLCampos, SQLDatos)
@@ -296,7 +299,24 @@ class clssConectMySQL:
     def func_CrearTabla(self, Tabla, SQLScript):
         """Crear una nueva tabla en la base de datos. Se le pasa el nombre
 	de la nueva tabla y los campos. Ejemplo:
-	func_CrearTabla(TablaPrueba","id INT, Nombre VARCHAR(100),DNI VARCHAR(20)")."""
-        SQLTemp = "CREATE TABLE " + Tabla + " ("
-        SQLTemp += SQLScript + "); "
-        self.MyCursor.execute(SQLTemp)
+	func_CrearTabla(TablaPrueba","id INT, Nombre VARCHAR(100),DNI VARCHAR(20)").
+	Si se pasan los datos vacíos creara una tabla de manera automática."""
+        if len(Tabla) == 0 or len(SQLScript) == 0:
+            Tabla = "BIBLIOTECA_TESTER"
+            SQLTemp = "CREATE TABLE BIBLIOTECA_TESTER ("
+            SQLTemp += "id INT, Tematica VARCHAR(50), Titulo VARCHAR(50), "
+            SQLTemp += "Formato VARCHAR(50), Paginas INT, Puntuacion INT"
+            SQLTemp += "); "      
+        else:    
+            SQLTemp = "CREATE TABLE " + Tabla + " ("
+            SQLTemp += SQLScript + "); "
+        try:
+            self.MyCursor.execute(SQLTemp)
+            self.MyConexion.commit() # Actualizar
+            self.MyTabla = Tabla
+            return True
+        except:
+            return False
+
+            
+        

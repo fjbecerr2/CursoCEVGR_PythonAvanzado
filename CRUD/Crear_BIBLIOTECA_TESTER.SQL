@@ -1,0 +1,1 @@
+CREATE TABLE BIBLIOTECA_TESTER (id INT, Tematica VARCHAR(50), Titulo VARCHAR(50),Formato VARCHAR(50), Paginas INT, Puntuacion INT); "

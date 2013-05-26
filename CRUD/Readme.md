@@ -20,9 +20,13 @@ Ficheros:
 Python
 --------
 
-* CRUD_Main_FJBecerra.py -> Código Python aplicación 	Versión: 0.7
-* CRUD_GTK_FJBecerra.py -> Código Interfaz GTK			Versión: 0.9
-* clssConectMySQL.py -> Código para MySQL				Versión: 1.8
+Versión tester 1.1
+----------------------------
+Versión en Módulos
+
+* CRUD_Main_FJBecerra.py -> Código Python aplicación 	Versión: 1.1
+* CRUD_GTK_FJBecerra.py -> Código Interfaz GTK			Versión: 1.3
+* clssConectMySQL.py -> Código para MySQL				Versión: 1.9
 
 XML
 ---
