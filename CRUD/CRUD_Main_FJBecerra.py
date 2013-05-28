@@ -2,7 +2,7 @@
 # coding: UTF-8 
 # Python Version: 2.7.3
 # Ejercicio: CRUD_Main_FJBecerra.py
-# Versión: 1.1
+# Versión: 1.3
 # Curso: Programación avanzada en Python
 # Centro: CEVUG
 # Autor: Fco. J. Becerra
@@ -17,7 +17,7 @@ import CRUD_GTK_FJBecerra 	# Interfaz gráfica
 import clssConectMySQL		# Clase de conexión con MySQL
 
 
-Version = "1.1" # Versión Activa
+__version__ = "1.3" # Versión Activa
 
 if __name__ == "__main__":
         app = CRUD_GTK_FJBecerra.GUI()        

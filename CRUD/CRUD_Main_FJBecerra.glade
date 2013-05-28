@@ -7,14 +7,14 @@
     <property name="type_hint">normal</property>
     <property name="has_separator">False</property>
     <property name="program_name">CRUD_Main_FJBecerra</property>
-    <property name="version">1.1</property>
+    <property name="version">1.3</property>
     <property name="copyright" translatable="yes">Copyright (c)</property>
-    <property name="comments" translatable="yes">Versi&#xF3;n tester 1.1
+    <property name="comments" translatable="yes">Versi&#xF3;n tester 1.3
 ----------------------------
 Versi&#xF3;n en M&#xF3;dulos
 
-clssConectMySQL_FJBecerra 	1.9
-CRUD_GTK_FJBecerra 		1.3</property>
+clssConectMySQL_FJBecerra 	2.0
+CRUD_GTK_FJBecerra 		1.5</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox1">
         <property name="visible">True</property>
@@ -85,7 +85,7 @@ CRUD_GTK_FJBecerra 		1.3</property>
                       <object class="GtkMenuItem" id="menuitemActualizarRegistro">
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
-                        <property name="label" translatable="yes">Actualizr Registro</property>
+                        <property name="label" translatable="yes">Actualizar Registro</property>
                         <property name="use_underline">True</property>
                         <signal name="button_press_event" handler="on_menuitemActualizarRegistro_button_press_event"/>
                       </object>
@@ -231,13 +231,20 @@ CRUD_GTK_FJBecerra 		1.3</property>
                     <property name="sensitive">False</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <signal name="clicked" handler="on_bBuscar_clicked"/>
                   </object>
                   <packing>
                     <property name="position">1</property>
                   </packing>
                 </child>
                 <child>
-                  <placeholder/>
+                  <object class="GtkEntry" id="entry_Buscar_main_window">
+                    <property name="can_focus">True</property>
+                    <property name="invisible_char">&#x25CF;</property>
+                  </object>
+                  <packing>
+                    <property name="position">2</property>
+                  </packing>
                 </child>
               </object>
               <packing>
