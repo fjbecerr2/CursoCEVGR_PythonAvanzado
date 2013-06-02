@@ -1,7 +1,7 @@
 # coding: UTF-8 
 # Python Version: 2.7.3
 # Fichero: clssConectMySQL_FJBecerra.py
-# Versión: 2.0
+# Versión: 2.1
 # Ejercicio: Ejercicio 1 - Programación Avanzada - Víctimas de... 
 # Curso: Programación avanzada en Python
 # Centro: CEVUG
@@ -15,6 +15,7 @@ import MySQLdb #Importar libreria
 # Clase: clssConectMySQL
 # Uso: Clase para operación de conexión a MySQL
 class clssConectMySQL:
+    """Maneja operaciones sobre MySQL."""
     
     # Constructor
     # since :    1.0
@@ -27,7 +28,7 @@ class clssConectMySQL:
     def __init__(self,ConectData=[]):
         """Realiza la conexión a una BBDD MySQL. Toma como parametros
         los datos de conexión con lista [Host,DB,User,Password,Tabla]."""
-        self.__version__ = "2.0" # Versión Activa
+        self.__version__ = "2.1" # Versión Activa
         # Comprobar el número de elementos
         # Estableciendo parametros de conexion
         self.Myhost = ConectData[0]
@@ -57,6 +58,7 @@ class clssConectMySQL:
     # since :   1.0             
     # uso   :   Desconecta un cursor
     def func_DesconectarCursor(self):
+        """Desconecta el cursor."""
         self.MyCursor.close();  
 
     
@@ -67,6 +69,7 @@ class clssConectMySQL:
     # uso   :   Activa un cursor para nuestra conexión
     # param :   iTipoCursor -> Entero permite especificar el tipo   
     def func_EstablecerCursor(self, iTipoCursor):
+        """Establece el cursor."""
         if iTipoCursor == 1: # Cursor con DictCursor            
             self.MyCursor = self.MyConexion.cursor(MySQLdb.cursors.DictCursor)                    
         else: # Cursor standard            
@@ -84,16 +87,17 @@ class clssConectMySQL:
     #       SQLDatos - Datos asignados a los campos 
     # return :  handlers
     def func_Insertar(self, SQLTabla, SQLCampos = [], SQLDatos = []):
-        """Genera una query INSERT... Se le pasan: el nombre de la tabla, 
-        los nombres de campos como una lista y los datos como otra lista."""
+        """Genera una query INSERT...
+
+        Se le pasan: el nombre de la tabla, los nombres de campos como una lista
+        y los datos como otra lista."""
         self.MyNewR = True # Nuevo registro en inserción
         self.MyQuery = "INSERT INTO " + SQLTabla + "("        
         # Ajustar el formato a un query añadiendo comillas "" y comas "," a los campos
         CamposMyQuery = self.func_ComponerSQL(SQLCampos,0)
-        ValoresMyQuery = self.func_ComponerSQL(SQLDatos,1)
+        ValoresMyQuery = self.func_ComponerSQL(SQLDatos,1)       
 
-        # Componer los campos de la consulta
-        for campo in CamposMyQuery:
+        for campo in CamposMyQuery:  # Componer los campos de la consulta
             self.MyQuery += campo
         self.MyQuery += ")"
         
@@ -112,7 +116,9 @@ class clssConectMySQL:
     # param :
     #       SQLDatos - Datos asignados a los campos 
     def func_Insertar_Basic(self, SQLDatos = []):
-        """Genera una query INSERT... Se le pasan: los datos como lista. Inserta en la BBDD de prueba"""
+        """Genera una query INSERT...
+
+        Se le pasan: los datos como lista. Inserta en la BBDD de prueba"""
         self.MyNewR = True # Nuevo registro en inserción
         self.MyQuery = "INSERT INTO " + self.MyTabla + "("        
         # Ajustar el formato a un query añadiendo comillas "" y comas "," a los campos
@@ -120,8 +126,7 @@ class clssConectMySQL:
         CamposMyQuery = self.func_ComponerSQL(CamposMyQuery,0)
         ValoresMyQuery = self.func_ComponerSQL(SQLDatos,1)
 
-        # Componer los campos de la consulta
-        for campo in CamposMyQuery:
+        for campo in CamposMyQuery: # Componer los campos de la consulta
             self.MyQuery += campo
         self.MyQuery += ")"
         
@@ -147,7 +152,7 @@ class clssConectMySQL:
         camposTemp = [] # Temporal para la composición
         campoTemp = ""  # Temporal para la composición
         ultimoCampo = False # Detecta si alcanzamos el último campo
-        longitud = 0 # Controlar el nº de campos en operación
+        longitud = 0 # Controlar el nº de campos en operación para fijar el último
         # Añadir las comillas
         for campo in Campos:
             if str(type(campo)) == "<type \'str\'>" and Campo_o_Valor == 1:
@@ -164,7 +169,7 @@ class clssConectMySQL:
          
             camposTemp.append(campoTemp) # Añadimos al temporal
                 
-        return camposTemp       
+        return camposTemp # Devolvemos los campos formateados como SQL
 
     
     # Función:  func_Seleccionar
@@ -178,7 +183,9 @@ class clssConectMySQL:
     #       SQLCampos - Lista de campos de la operación
     #       SQLWhere - Condición
     def func_Seleccionar(self, SQLTabla, SQLCampos, SQLWhere):
-        """Compone una query SELECT... Se la pasan: el nombre de la tabla, 
+        """Compone una query SELECT...
+
+        Se la pasan: el nombre de la tabla, 
         los campos y la condición de WHERE."""
         self.MyNewR = False # Registro en selección
         self.MyQuery = "SELECT " + SQLCampos
@@ -202,41 +209,8 @@ class clssConectMySQL:
     # since :   1.0             
     # uso   :   Ejecutar una consulta
     def func_ExecSQL(self):
+        """Ejecuta una Query SQL."""
         self.MyCursor.execute(self.MyQuery)
-
-    
-    # Función:  func_MostrarDatos
-    # author :
-    # Estado [D]esarrollo/[O]perativa: O    
-    # since :   1.0             
-    # uso   :   Mostrar una consulta SELECT
-    def func_MostrarDatos(self):
-        """Muestra los registros apuntados por un cursor."""
-        registroTemp= self.MyCursor.fetchone()
-        while registroTemp != False and registroTemp != None:
-            print registroTemp
-            registroTemp= self.MyCursor.fetchone() # Siguiente registro 
-
-
-    # Función:  func_MostrarDatosCol
-    # author :
-    # Estado [D]esarrollo/[O]perativa: O    
-    # since :   1.0             
-    # uso   :   Mostrar datos formateados 
-    def func_MostrarDatosCol(self):
-        """Muestra en columnas los datos apuntados por el cursor."""
-        registrosTemp = self.MyCursor.fetchall()
-        nregistrosTemp = self.MyCursor.rowcount 
-        regCabecera = True
-        for registroTemp in registrosTemp:
-
-            if regCabecera == True: # Mostar la cabecera para el listado
-                print " "
-                print "\n Resultado de la consulta : "+ str(nregistrosTemp)
-                print "-----------------------------------------------------------------"
-                regCabecera = False
-            
-            print str(registroTemp["id"])+ " - " + registroTemp["Nombre"]+ " - " +registroTemp["Profesion"]+ " - " +registroTemp["Muerte"]
 
     
     # Función:  func_ControlarID
@@ -248,8 +222,11 @@ class clssConectMySQL:
     # param : Incrementar - Indica si incrementar o no el Id
     # return :  Valor calculado del nuevo ID
     def func_ControlarID(self, Incrementar = False):
-        """Devuelve un ID para un campo clave. Si no existe ningún registro previo 
+        """Devuelve un ID para un campo clave.
+
+        Si no existe ningún registro previo 
         los genera, si existen registros previos toma el mayor valor y lo aumenta."""
+
         SQLTemp = "SELECT * FROM "+ self.MyTabla+" WHERE 1 ORDER BY ID DESC;"
         self.MyCursor.execute(SQLTemp)
         # registrosTemp = self.MyCursor.fetchall()[-1:]
@@ -272,48 +249,22 @@ class clssConectMySQL:
     # Función:  func_BorrarRegs
     # author :
     # Estado [D]esarrollo/[O]perativa: O    
-    # since :   1.0             
+    # since :   1.0
+    # update :  2.1
     # uso   :   Eliminar los registros actuales
-    def func_BorrarRegs(self):
-        """Realiza un DELETE sobre una tabla."""
-        SQLTemp = "DELETE FROM " + self.MyTabla+ ";"
+    # param :   Operacion - Índica que tipo de borrar
+    def func_BorrarRegistros(self, Operacion):
+        """Realiza un DELETE sobre una tabla completa.
+
+        Se puede pasar como parámetro 'all' para borrar
+        todos los registros o cualquier condición sobre los campos como id > 1"""
+
+        if Operacion == "all": # Eliminar todos los registros
+            SQLTemp = "DELETE FROM " + self.MyTabla+ ";"
+        else: # Usar el filtro pasado
+            SQLTemp = "DELETE FROM " + self.MyTabla+ " WHERE "+Operacion+" ;"            
         self.MyCursor.execute(SQLTemp)
-
-
-    # Función:  func_DatosTest
-    # author :
-    # Estado [D]esarrollo/[O]perativa: O    
-    # since :   1.0             
-    # uso   :   Insertar una serie de datos para pruebas
-    # param :   nReg - Número de registro que insertaremos
-    def func_DatosTest(self, nReg):
-        """Genera registros en número igual al argumento pasado."""
-        for n in range(nReg):
-             # Asignamos los valores para la consulta
-            self.MyNewR = True # Nuevos registros en inserción
-            SQLCampos = "id", "Nombre", "Profesion", "Muerte"
-            SQLDatos = self.func_ControlarID(), "Zombies"+str(n),"Muertos Vivientes"+str(n),"Desmembramiento a espada"+str(n)
-            self.func_Insertar(self.MyTabla, SQLCampos, SQLDatos)
-            self.func_ExecSQL()
-
-
-    # Función:  func_ComprobarDatos
-    # author :
-    # Estado [D]esarrollo/[O]perativa: O    
-    # since :   1.0             
-    # uso   :   Controlar la integridad de los campos datos antes de usarlos en la query
-    # param :   SQLDato - Lista de los datos para la query          
-    # return :  False / True si el campo está vacío
-    def func_ComprobarDatos(self,SQLDatos = []):
-        """Comprueba que no se pasen valores vacíos en campos. Los datos se 
-        pasan como una lista."""
-        campoVacio = False
-        for n in range(len(SQLDatos)):
-            if len(str(SQLDatos[n]))==0:
-                campoVacio = True
-
-        return campoVacio        
-
+    
             
     # Función:  func_RecuperarTablas
     # author :
@@ -322,8 +273,9 @@ class clssConectMySQL:
     # uso   :   Listar las tablas disponibles
     # return :  Devuelve una Lista con las tablas disponibles
     def func_RecuperarTablas(self):
-        """Muestra las tablas disponibles en una BBDD. Devuelve una lista
-        con las tablas disponibles"""
+        """Muestra las tablas disponibles en una BBDD.
+
+        Devuelve una lista con las tablas disponibles"""
         TablasSQL = []
         self.MyCursor.execute('SHOW TABLES;') # Pasar las tablas al cursor
         for TablasTemp in self.MyCursor:
@@ -332,38 +284,6 @@ class clssConectMySQL:
             
         TablasSQL.sort() # Ordenar
         return TablasSQL
-
-		
-    # Función:  func_CrearTabla
-    # author :
-    # Estado [D]esarrollo/[O]perativa: D   
-    # since :   1.8             
-    # uso   :   Listar las tablas disponibles
-    # param :   
-    #	Tabla - Nombre de la nueva tabla
-    #	SQLScript - Definición de los campos
-    # return :  False / True (Error/Correcto)
-    def func_CrearTabla(self, Tabla, SQLScript):
-        """Crear una nueva tabla en la base de datos. Se le pasa el nombre
-	de la nueva tabla y los campos. Ejemplo:
-	func_CrearTabla(TablaPrueba","id INT, Nombre VARCHAR(100),DNI VARCHAR(20)").
-	Si se pasan los datos vacíos creara una tabla de manera automática."""
-        if len(Tabla) == 0 or len(SQLScript) == 0:
-            Tabla = "BIBLIOTECA_TESTER"
-            SQLTemp = "CREATE TABLE BIBLIOTECA_TESTER ("
-            SQLTemp += "id INT, Tematica VARCHAR(50), Titulo VARCHAR(50), "
-            SQLTemp += "Formato VARCHAR(50), Paginas INT, Puntuacion INT"
-            SQLTemp += "); "      
-        else:    
-            SQLTemp = "CREATE TABLE " + Tabla + " ("
-            SQLTemp += SQLScript + "); "
-        try:
-            self.MyCursor.execute(SQLTemp)
-            self.MyConexion.commit() # Actualizar
-            self.MyTabla = Tabla
-            return True
-        except:
-            return False
 
             
     # Función:  func_CargarRegistroInicial
@@ -385,18 +305,70 @@ class clssConectMySQL:
             SQLTemp += " WHERE Id =" +str(nIdTemp)+ " ORDER BY ID;"            
         else:
             SQLTemp += " ORDER BY ID;"
+            
         try:
-            self.MyCursor.execute(SQLTemp)
-            #self.func_MostrarDatos()
+            self.MyCursor.execute(SQLTemp)            
             RegistroTemp = self.MyCursor.fetchone()
             if RegistroTemp != False and RegistroTemp[0] != None:                
                 for CampoTemp in RegistroTemp: # Pasar los datos del registro
                     self.CamposInterfaz.append(CampoTemp)
-        except:
-            # Pasar una valores por defecto
+        except: # Pasar unos valores por defecto            
             self.CamposInterfaz = [0,"Ningun registro","Ningun registro","Ningun registro",0,0]
         
         return self.CamposInterfaz
 
         
+    # Función:  func_BorrarRegistro
+    # author :
+    # Estado [D]esarrollo/[O]perativa: D   
+    # since :   2.1    
+    # uso   :  Elimina un registro
+    # param : nIdTemp - Número ID del registro solicitado
+    # return :  False / True (Incorrecto / Correcta operación)
+    def func_BorrarRegistro(self, nIdTemp):
+        """Elimina un registro con una consulta SQL."""         
+        self.MyTabla = "BIBLIOTECA_TESTER"
+        # Uso una query temporal para no repetir la operación
+        SQLTemp = "DELETE FROM "+ self.MyTabla + " WHERE Id = " +str(nIdTemp) +" ;"        
+        self.MyCursor.execute(SQLTemp)
+
         
+    # Función:  fun_ActualizarRegistro
+    # author :
+    # Estado [D]esarrollo/[O]perativa: D   
+    # since :   2.1    
+    # uso   :  Actualizar un registro
+    # param :
+    #   nIdTemp - Número ID del registro solicitado
+    #   SQLDatos - Valores para la actualización    
+    def fun_ActualizarRegistro(self, nIdTemp, SQLDatos = []):
+        """Actualizar un registro."""
+        ultimoCampo = False # Detecta si alcanzamos el último campo
+        longitud = 0 # Controlar el nº de campos en operación para fijar el último
+        self.MyNewR = False # Nuevo registro en inserción
+        # Naturalmente no actualizamos el id
+        CamposMyQuery = ["Tematica","Titulo","Formato","Paginas","Puntuacion"]
+        SQLTemp = "UPDATE " + self.MyTabla + " SET "
+        for n in range(len(CamposMyQuery)):
+            if str(type(SQLDatos[n])) == "<type \'str\'>":
+                SQLTemp += CamposMyQuery[n] + "=" +"\"" + SQLDatos[n] + "\""
+            else:
+                SQLTemp += CamposMyQuery[n] + "=" + str(SQLDatos[n]) # No añadimos ajuste, campos no str (numérico)
+            
+            # Existen varios campos y no estamos en el último
+            if len(CamposMyQuery)>0 and ultimoCampo == False: 
+                SQLTemp += ", "                
+                longitud = longitud + 1 # Sumar el campo al control
+                if longitud == len(CamposMyQuery) - 1: # Ultimo campo? no añade la ","
+                    ultimoCampo = True # Pasar del campo inicial
+
+        SQLTemp += " WHERE Id=" +str(nIdTemp)+ " ;"
+
+        try:
+            self.MyCursor.execute(SQLTemp)
+            return True
+        except:
+            return False
+        
+
+    
