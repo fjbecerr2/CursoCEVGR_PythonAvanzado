@@ -327,7 +327,7 @@ class clssConectMySQL:
     # return :  False / True (Incorrecto / Correcta operación)
     def func_BorrarRegistro(self, nIdTemp):
         """Elimina un registro con una consulta SQL."""         
-        self.MyTabla = "BIBLIOTECA_TESTER"
+        #self.MyTabla = "BIBLIOTECA_TESTER"
         # Uso una query temporal para no repetir la operación
         SQLTemp = "DELETE FROM "+ self.MyTabla + " WHERE Id = " +str(nIdTemp) +" ;"        
         self.MyCursor.execute(SQLTemp)
