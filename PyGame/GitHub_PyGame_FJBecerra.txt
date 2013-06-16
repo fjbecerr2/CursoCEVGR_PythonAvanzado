@@ -1,0 +1,4 @@
+Atención: El código está optimizado para liberías en Windows, puede tener algún problema en Linux
+En caso de error sustituir las líneas iniciales de : Main_PyGame_FJBecerra.py
+
+https://github.com/fjbecerr2/CursoCEVGR_PythonAvanzado.git
