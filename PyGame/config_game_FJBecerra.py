@@ -1,4 +1,4 @@
-﻿# coding: UTF-8 
+# coding: UTF-8 
 # Python Version: 2.7.3
 # Fichero: config_game_FjBecerra.py
 # Version: 0.0
@@ -29,9 +29,20 @@ class clssconfig_game:
         """Asigna los valores del juego"""
         self.__version__ = "0.0" # Version Activa
         self.dir_aplicacion = os.getcwd()
-        self.dir_recursos = self.dir_aplicacion + '\\resources'
-        self.dir_sonidos = self.dir_recursos + '\\sound'
-        self.dir_imagenes = self.dir_recursos + '\\img'
+        
+        # Detectar el tipo de sistema operativo
+        self.MySistemaOP = os.name
+        
+        if self.MySistemaOP == "nt": # Presumiblemente Windows
+            self.dir_recursos = self.dir_aplicacion + '\\resources'
+            self.dir_sonidos = self.dir_recursos + '\\sound'
+            self.dir_imagenes = self.dir_recursos + '\\img'
+        
+        if self.MySistemaOP == "posix": # Presumiblemente Linux
+            self.dir_recursos = self.dir_aplicacion + '/resources'
+            self.dir_sonidos = self.dir_recursos + '/sound'
+            self.dir_imagenes = self.dir_recursos + '/img'
+        
         self.nivel = 1
 
         # Definir los elementos
@@ -47,25 +58,43 @@ class clssconfig_game:
     # uso :     Asignar los ficheros graficos    
     def func_Asignar_Graficos(self):
         """Asigna los ficheros graficos del juego"""
-        self.dic_Graficos = {"Fondo": self.dir_imagenes+'\\fondo.png',
-            "Naver": self.dir_imagenes+'\\naver.png',
-            "Navea": self.dir_imagenes+'\\navea.png',
-            "Explo": self.dir_imagenes+'\\explo.png',
-            "Rayo": self.dir_imagenes+'\\rayo.png'
-            }
+        if self.MySistemaOP == "nt": # Presumiblemente Windows
+            self.dic_Graficos = {"Fondo": self.dir_imagenes+'\\fondo.png',
+                "Naver": self.dir_imagenes+'\\naver.png',
+                "Navea": self.dir_imagenes+'\\navea.png',
+                "Explo": self.dir_imagenes+'\\explo.png',
+                "Rayo": self.dir_imagenes+'\\rayo.png'
+                }
+        
+        if self.MySistemaOP == "posix": # Presumiblemente Linux     
+                self.dic_Graficos = {"Fondo": self.dir_imagenes+'/fondo.png',
+                "Naver": self.dir_imagenes+'/naver.png',
+                "Navea": self.dir_imagenes+'/navea.png',
+                "Explo": self.dir_imagenes+'/explo.png',
+                "Rayo": self.dir_imagenes+'/rayo.png'
+                }
 
+        
     # func_Asignar_Sonidos
     # since :    0.0
     # Estado [D]esarrollo/[O]perativa: D    
     # author :
     # uso :     Asignar los ficheros sonido         
     def func_Asignar_Sonidos(self):
-        self.dic_Sonidos = {"Fondo": self.dir_sonidos+'\\fondo.wav',
-            "Explo":self.dir_sonidos+'\\explo.wav',
-            "Rayo":self.dir_sonidos+'\\rayo.wav',
-            "Final":self.dir_sonidos+'\\final.wav'
-            }
+        if self.MySistemaOP == "nt": # Presumiblemente Windows
+            self.dic_Sonidos = {"Fondo": self.dir_sonidos+'\\fondo.wav',
+                "Explo":self.dir_sonidos+'\\explo.wav',
+                "Rayo":self.dir_sonidos+'\\rayo.wav',
+                "Final":self.dir_sonidos+'\\final.wav'
+                }
         
+        if self.MySistemaOP == "posix": # Presumiblemente Linux          
+                self.dic_Sonidos = {"Fondo": self.dir_sonidos+'/fondo.wav',
+                "Explo":self.dir_sonidos+'/explo.wav',
+                "Rayo":self.dir_sonidos+'/rayo.wav',
+                "Final":self.dir_sonidos+'/final.wav'
+                }
+     
     # func_Definir_Colores
     # since :    0.0
     # Estado [D]esarrollo/[O]perativa: D    
@@ -108,16 +137,16 @@ class clssconfig_game:
         """Devuelve el nombre y ubicacion del fichero graficos solicitado."""
         return self.dic_Graficos[MyGrafico]
      
-	# func_Devolver_Sonido
+    # func_Devolver_Sonido
     # since :    0.0
     # Estado [D]esarrollo/[O]perativa: D    
     # author :
-    # uso :    Devuelve un sonido 	 
+    # uso :    Devuelve un sonido    
     def func_Devolver_Sonido(self, MySonido):
         """Devuelve el nombre y ubicacion del fichero sonido solicitado."""
         return self.dic_Sonidos[MySonido]
      
-	# func_Devolver_Color
+    # func_Devolver_Color
     # since :    0.0
     # Estado [D]esarrollo/[O]perativa: D    
     # author :

@@ -13,7 +13,8 @@
 import pygame
 import os, sys 
 # Importar módulo gráfico windows
-os.environ['SDL_VIDEODRIVER'] = 'windib'
+if os.name == "nt":
+	os.environ['SDL_VIDEODRIVER'] = 'windib'
 
 # Módulos propios
 import config_game_FJBecerra
