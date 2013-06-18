@@ -1,10 +1,15 @@
 <NotepadPlus>
     <Project name="Proyecto">
-        <Folder name="SQL">
-            <File name="SQL\Crear_BBDD.py" />
-            <File name="SQL\__init__.py" />
-            <File name="SQL\Registros_BBDD.py" />
+        <Folder name="Proy_SQL">
+            <File name="Proy_SQL\Crear_BBDD.py" />
+            <File name="Proy_SQL\__init__.py" />
+            <File name="Proy_SQL\Registros_BBDD.py" />
         </Folder>
         <File name="Readme.md" />
+        <File name="Proyecto_Main_FJBecerra.py" />
+        <Folder name="Proy_Scrapy">
+            <File name="Proy_Scrapy\Scrapy_FJBecerra.py" />
+            <File name="Proy_Scrapy\__init__.py" />
+        </Folder>
     </Project>
 </NotepadPlus>
