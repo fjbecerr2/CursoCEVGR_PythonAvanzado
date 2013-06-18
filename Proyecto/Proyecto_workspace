@@ -1,0 +1,9 @@
+<NotepadPlus>
+    <Project name="Proyecto">
+        <Folder name="SQL">
+            <File name="SQL\Crear_BBDD.py" />
+            <File name="SQL\__init__.py" />
+            <File name="SQL\Registros_BBDD.py" />
+        </Folder>
+    </Project>
+</NotepadPlus>
