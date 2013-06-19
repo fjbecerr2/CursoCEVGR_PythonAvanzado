@@ -70,15 +70,15 @@ def fun_DefinirItem_Scrapy_Proyecto():
     for linea in itemFile_Temp: 
         itemFile.write(str(linea))
     itemFile.close()
-   
-    
- # func_Generar_ScrapySpiders_Fichero
+
+# func_Generar_AgapeaSpiders_Fichero
 # since :    0.0
 # Estado [D]esarrollo/[O]perativa: O   
 # author :
 # uso :     Crea un fichero para el spider
+# param: MyUrl - Url para generar los div
 # return: False / True (Operacion Termino)             
-def func_Generar_ScrapySpiders_Fichero():
+def func_Generar_AgapeaSpiders_Fichero(MyUrl = "http://www.agapea.com/Informatica-cn142p1i.htm"):
     # Localizar los directorios
     dir_aplicacion = os.getcwd()
     dir_scrapy = dir_aplicacion 
@@ -93,28 +93,38 @@ def func_Generar_ScrapySpiders_Fichero():
         
     os.chdir(dir_scrapy) # Posicionarse en el directorio
     # Crear el fichero
-    spiderFile = open("dmoz_spider.py","w")
+    spiderFile = open("agapea_spider.py","w")
     spiderFile.write("from scrapy.spider import BaseSpider\n")
-    spiderFile.write("from scrapy.selector import HtmlXPathSelector\n\n")
-    spiderFile.write("class DmozSpider(BaseSpider):\n")
-    spiderFile.write("\tname = \"dmoz\"\n")
-    spiderFile.write("\tallowed_domains = [\"dmoz.org\"]\n")
+    spiderFile.write("from scrapy.selector import HtmlXPathSelector\n")
+    spiderFile.write("from scrapy.http import Request\n\n")
+    spiderFile.write("class agapeaSpider(BaseSpider):\n")
+    spiderFile.write("\tname = \"agapea\"\n")
+    spiderFile.write("\tallowed_domains = [\"agapea.com\"]\n")
     spiderFile.write("\tstart_urls = [\n")
-    spiderFile.write("\t\t\"http://www.dmoz.org/Computers/Programming/Languages/Python/Books/\",\n")
-    spiderFile.write("\t\t\"http://www.dmoz.org/Computers/Programming/Languages/Python/Resources/\"\n")
+    spiderFile.write("\t\t\""+MyUrl+"\",\n")
     spiderFile.write("\t]\n\n")
     spiderFile.write("\tdef parse(self, response):\n")
     spiderFile.write("\t\thxs = HtmlXPathSelector(response)\n")
-    spiderFile.write("\t\tsites = hxs.select(\'//ul/li\')\n")
+    spiderFile.write("\t\t# Titulo\n")   
+    spiderFile.write("\t\tsites = hxs.select('/html/body/div/div[4]/div/div[2]/div/div/div[2]/h2/a')\n")
     spiderFile.write("\t\tfor site in sites:\n")
-    spiderFile.write("\t\t\ttitle = site.select('a/text()').extract()\n")
-    spiderFile.write("\t\t\tlink = site.select('a/@href').extract()\n")
-    spiderFile.write("\t\t\tdesc = site.select('text()').extract()\n\n")
+    # Insertar código para guardar en un fichero CSV        
+    spiderFile.write("\t\t\tprint site\n") 
+    spiderFile.write("\t\t# Autor\n")           
+    spiderFile.write("\t\tsites = hxs.select('/html/body/div/div[4]/div/div[2]/div/div/div[2]/ul/li')\n")
+    spiderFile.write("\t\tfor site in sites:\n")    
+    # Insertar código para guardar en un fichero CSV        
+    spiderFile.write("\t\t\tprint site\n") 
+    spiderFile.write("\t\t# Precio\n") 
+    spiderFile.write("\t\tsites = hxs.select('/html/body/div/div[4]/div/div[2]/div/div/div[2]/ul/li[3]/strong')\n") 
+    spiderFile.write("\t\tfor site in sites:\n")
+    spiderFile.write("\t\t\tprint site\n")             
     spiderFile.close() 
-    os.chdir(dir_aplicacion)
+    os.chdir(dir_aplicacion)            
+            
     
 def func_Generar_ScrapyPider_Resultados():
-    os.system("scrapy crawl dmoz")
+    os.system("scrapy crawl agapea")
 
 
     

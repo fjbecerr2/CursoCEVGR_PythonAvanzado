@@ -24,22 +24,26 @@ __version__ = "0.0" # Versión Activa
   #      app = CRUD_GTK_FJBecerra.GUI()        
     #    app.main()
 	
-#[Host,DB,User,Password,Tabla].	
+#[Host,DB,User,Password,Tabla].
+
+Proy_SQL.func_GenerarBBDD_Ejercicio()
+    
+# Operativas
+"""
 MyDatosConexion = ["localhost","BDSCRAPY_SEARCH","scrapyUser","scrapypw"]
-	#MyBBDD = Proy_SQL.clssConectMySQL_Mini(MyDatosConexion)	
-	#MyBBDD.func_Insertar_Registro(
-	#print "Conexion establecida"
-	#MyBBDD.func_Desconectar()
-	#print "Desconectada"
-	
-print "Prueba Scrapy"
+MyBBDD = Proy_SQL.clssConectMySQL_Mini(MyDatosConexion)	
+MyBBDD.func_Insertar_Registro(
+print "Conexion establecida"
+MyBBDD.func_Desconectar()
+print "Desconectada"
+"""	
+
+# Operativas
+"""
 Proy_Scrapy.func_Generar_Scrapy_Proyecto()
 Proy_Scrapy.fun_DefinirItem_Scrapy_Proyecto()
-Proy_Scrapy.func_Generar_ScrapySpiders_Fichero()
-#MyDominios = ["Dominio1", "Dominio2"]
-#Proy_Scrapy.func_Generar_Scrapy_Spiders(MyDominios)
-#Proy_Scrapy.func_Generar_ScrapySpiders_Fichero("dmoz","org","http://www.dmoz.org/Computers/Programming/Languages/Python/Books/")
-#Proy_Scrapy.func_Generar_ScrapyPider_Resultados()
+Proy_Scrapy.func_Generar_AgapeaSpiders_Fichero()
+"""
 	
 
 

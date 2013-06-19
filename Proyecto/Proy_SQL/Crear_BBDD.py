@@ -151,9 +151,10 @@ def func_GenerarBBDD_Ejercicio():
     
     MyCampos_Urls = [] # Segunda tabla
     MyCampos_Urls.append("Dominio VARCHAR(100),")
+    MyCampos_Urls.append("Url VARCHAR(150),")
     MyCampos_Urls.append("Titulo VARCHAR(100),")
-    MyCampos_Urls.append("Link VARCHAR(150),")
-    MyCampos_Urls.append("Descrip VARCHAR(250)")
+    MyCampos_Urls.append("Autor VARCHAR(50),")
+    MyCampos_Urls.append("Precio FLOAT")
     
     print "Generando SQL..."
     try:
