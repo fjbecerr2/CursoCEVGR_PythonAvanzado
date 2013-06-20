@@ -69,7 +69,9 @@ def fun_DefinirItem_Scrapy_Proyecto():
     itemFile = open(dir_scrapy,"w") 
     for linea in itemFile_Temp: 
         itemFile.write(str(linea))
+    
     itemFile.close()
+    os.chdir(dir_aplicacion)            
 
 # func_Generar_AgapeaSpiders_Fichero
 # since :    0.0
@@ -104,27 +106,51 @@ def func_Generar_AgapeaSpiders_Fichero(MyUrl = "http://www.agapea.com/Informatic
     spiderFile.write("\t\t\""+MyUrl+"\",\n")
     spiderFile.write("\t]\n\n")
     spiderFile.write("\tdef parse(self, response):\n")
+    # Fichero Origen para CSV
+    spiderFile.write("\t\tficheroCSV=open(\"scrapycsv.txt\",\"w\")\n")
+    
     spiderFile.write("\t\thxs = HtmlXPathSelector(response)\n")
     spiderFile.write("\t\t# Titulo\n")   
-    spiderFile.write("\t\tsites = hxs.select('/html/body/div/div[4]/div/div[2]/div/div/div[2]/h2/a')\n")
+    spiderFile.write("\t\tsites = hxs.select('/html/body/div/div[4]/div/div[2]/div/div/div[2]/h2/a/@title')\n")
     spiderFile.write("\t\tfor site in sites:\n")
-    # Insertar código para guardar en un fichero CSV        
-    spiderFile.write("\t\t\tprint site\n") 
+    # Código para guardar en un fichero CSV 
+    spiderFile.write("\t\t\tstrTemp = str(site)\n") 
+    spiderFile.write("\t\t\tstrTemp+=\"\\n\"\n")
+    spiderFile.write("\t\t\tficheroCSV.write(strTemp)\n")       
     spiderFile.write("\t\t# Autor\n")           
-    spiderFile.write("\t\tsites = hxs.select('/html/body/div/div[4]/div/div[2]/div/div/div[2]/ul/li')\n")
+    spiderFile.write("\t\tsites = hxs.select('/html/body/div/div[4]/div/div[2]/div/div/div[2]/ul/li[1]')\n")
     spiderFile.write("\t\tfor site in sites:\n")    
     # Insertar código para guardar en un fichero CSV        
-    spiderFile.write("\t\t\tprint site\n") 
+    spiderFile.write("\t\t\tstrTemp = str(site)\n") 
+    spiderFile.write("\t\t\tstrTemp+=\"\\n\"\n")    
+    spiderFile.write("\t\t\tficheroCSV.write(strTemp)\n")       
     spiderFile.write("\t\t# Precio\n") 
-    spiderFile.write("\t\tsites = hxs.select('/html/body/div/div[4]/div/div[2]/div/div/div[2]/ul/li[3]/strong')\n") 
+    spiderFile.write("\t\tsites = hxs.select('//html//body//div//div[4]//div//div[2]//div//div//div[2]//ul//li[3]/strong')\n")
     spiderFile.write("\t\tfor site in sites:\n")
-    spiderFile.write("\t\t\tprint site\n")             
-    spiderFile.close() 
+    spiderFile.write("\t\t\tstrTemp = str(site)\n") 
+    spiderFile.write("\t\t\tstrTemp+=\"\\n\"\n")
+    spiderFile.write("\t\t\tficheroCSV.write(strTemp)\n") 
+    spiderFile.write("\t\tficheroCSV.close()\n")    
+    
     os.chdir(dir_aplicacion)            
-            
+           
     
 def func_Generar_ScrapyPider_Resultados():
+    # Localizar los directorios
+    dir_aplicacion = os.getcwd()
+    dir_scrapy = dir_aplicacion 
+    MySistemaOP = os.name # Sistema operativo
+    
+    # Localizar el directorio de spiders
+    if MySistemaOP == "nt": # Presumiblemente Windows
+        dir_scrapy = dir_aplicacion + '\\Proyscrapytemp'
+            
+    if MySistemaOP == "posix": # Presumiblemente Linux
+        dir_scrapy = dir_aplicacion + '/Proyscrapytemp'          
+        
+    os.chdir(dir_scrapy) # Posicionarse en el directorio
     os.system("scrapy crawl agapea")
+    os.chdir(dir_aplicacion)  
 
 
     

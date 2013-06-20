@@ -26,7 +26,9 @@ __version__ = "0.0" # Versión Activa
 	
 #[Host,DB,User,Password,Tabla].
 
-Proy_SQL.func_GenerarBBDD_Ejercicio()
+# Operativa
+"""Proy_SQL.func_GenerarBBDD_Ejercicio()
+"""
     
 # Operativas
 """
@@ -43,9 +45,10 @@ print "Desconectada"
 Proy_Scrapy.func_Generar_Scrapy_Proyecto()
 Proy_Scrapy.fun_DefinirItem_Scrapy_Proyecto()
 Proy_Scrapy.func_Generar_AgapeaSpiders_Fichero()
-"""
+Proy_Scrapy.func_Generar_ScrapyPider_Resultados()
+#"""
 	
-
+Proy_Scrapy.func_Limpiar_FicheroFuente()
 
 	
         

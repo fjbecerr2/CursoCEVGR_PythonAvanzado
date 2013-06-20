@@ -11,3 +11,4 @@
 # Operativa: Paquete de generadores SQL
 
 from Scrapy_FJBecerra import *
+from CSV_FJBecerra import *
