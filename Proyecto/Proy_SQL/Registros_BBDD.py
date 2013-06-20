@@ -71,7 +71,7 @@ class clssConectMySQL_Mini:
     # since :   1.0             
     # uso   :   Activa un cursor para nuestra conexión
     # param :   iTipoCursor -> Entero permite especificar el tipo   
-    def func_EstablecerCursor(self, iTipoCursor):
+    def func_EstablecerCursor(self, iTipoCursor=0):
         """Establece el cursor."""
         if iTipoCursor == 1: # Cursor con DictCursor            
             self.MyCursor = self.MyConexion.cursor(MySQLdb.cursors.DictCursor)                    
@@ -97,8 +97,8 @@ class clssConectMySQL_Mini:
             CamposMyQuery = ["Dominio","Link"]
         else: 
             self.MyQuery = "INSERT INTO " + self.MyTablas["MyTabla_Urls"] + "(" 
-            CamposMyQuery = ["Dominio","Titulo","Link","Descrip"]
-        
+            CamposMyQuery = ["Dominio", "Url", "Titulo", "Autor", "Precio"]
+
         # Ajustar el formato a un query añadiendo comillas "" y comas "," a los campos        
         CamposMyQuery = self.func_ComponerSQL(CamposMyQuery,0)
         ValoresMyQuery = self.func_ComponerSQL(SQLDatos,1)
