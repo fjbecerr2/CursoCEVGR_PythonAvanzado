@@ -24,12 +24,11 @@ __version__ = "0.0" # Versión Activa
 # return: False / True (Operacion Termino)
 def func_Generar_Scrapy_Proyecto():
     """Genera un proyecto Scrapy."""
-    print "Generando un proyecto"
     MyProyecto = "scrapy startproject Proyscrapytemp"
     if os.system(MyProyecto) == 0: # Error de sistema
-        return False            
+        return True           
     else:
-        return True
+        return False
             
 # fun_DefinirItem_Scrapy_Proyecto
 # since :    0.0
@@ -39,39 +38,43 @@ def func_Generar_Scrapy_Proyecto():
 # return: False / True (Operacion Termino)          
 def fun_DefinirItem_Scrapy_Proyecto():
     """Añade los item al fichero items.py generado por Scrapy."""
-    # Tomas los directorios para localizar los archivos 
-    dir_aplicacion = os.getcwd()
-    dir_scrapy = dir_aplicacion 
-    MySistemaOP = os.name   # Sistema Operativo
+    try:
+        # Tomas los directorios para localizar los archivos 
+        dir_aplicacion = os.getcwd()
+        dir_scrapy = dir_aplicacion 
+        MySistemaOP = os.name   # Sistema Operativo
     
-    # Localizar los directorios y ficheros creados por Scrapy
-    if MySistemaOP == "nt": # Presumiblemente Windows
-        dir_scrapy = dir_aplicacion + '\\Proyscrapytemp\\Proyscrapytemp\\items.py'
+        # Localizar los directorios y ficheros creados por Scrapy
+        if MySistemaOP == "nt": # Presumiblemente Windows
+            dir_scrapy = dir_aplicacion + '\\Proyscrapytemp\\Proyscrapytemp\\items.py'
             
-    if MySistemaOP == "posix": # Presumiblemente Linux
-        dir_scrapy = dir_aplicacion + '/Proyscrapytemp/Proyscrapytemp/items.py'
+        if MySistemaOP == "posix": # Presumiblemente Linux
+            dir_scrapy = dir_aplicacion + '/Proyscrapytemp/Proyscrapytemp/items.py'
 
-    # Leer el contenido del fichero
-    itemFile = open(dir_scrapy,"r")    
-    itemFile_Temp = itemFile.readlines()
-    itemFile.close()
+        # Leer el contenido del fichero
+        itemFile = open(dir_scrapy,"r")    
+        itemFile_Temp = itemFile.readlines()
+        itemFile.close()
     
-    # Recorrer el contenido del fichero
-    for contador in range(len(itemFile_Temp)):
-        # Usar una expresión regular para localizar la última línea  por defecto "pass"
-        if re.match("^([a-zA-Z\s]+)pass",itemFile_Temp[contador]) :
-            # Sustituir el pass y añadir las línea de los items
-            itemFile_Temp[contador]  = "\ttitle = Field()\n"
-            itemFile_Temp.append("\tlink = Field()\n")
-            itemFile_Temp.append("\tdesc = Field()\n")
+        # Recorrer el contenido del fichero
+        for contador in range(len(itemFile_Temp)):
+            # Usar una expresión regular para localizar la última línea  por defecto "pass"
+            if re.match("^([a-zA-Z\s]+)pass",itemFile_Temp[contador]) :
+                # Sustituir el pass y añadir las línea de los items
+                itemFile_Temp[contador]  = "\ttitle = Field()\n"
+                itemFile_Temp.append("\tlink = Field()\n")
+                itemFile_Temp.append("\tdesc = Field()\n")
 
-    # Sustituir el contenido del fichero
-    itemFile = open(dir_scrapy,"w") 
-    for linea in itemFile_Temp: 
-        itemFile.write(str(linea))
+        # Sustituir el contenido del fichero
+        itemFile = open(dir_scrapy,"w") 
+        for linea in itemFile_Temp: 
+            itemFile.write(str(linea))
     
-    itemFile.close()
-    os.chdir(dir_aplicacion)            
+        itemFile.close()
+        os.chdir(dir_aplicacion) 
+        return True
+    except:
+        return False
 
 # func_Generar_AgapeaSpiders_Fichero
 # since :    0.0

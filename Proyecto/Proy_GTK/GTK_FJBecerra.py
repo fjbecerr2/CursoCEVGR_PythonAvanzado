@@ -14,6 +14,9 @@ import pygtk
 pygtk.require("2.0")
 import gtk
 import os
+import Proy_Scrapy  # Paquete Scrapy
+import time
+
 #import clssConectMySQL # Importa el módulo que contiene las operaciones MySQL
 
 class GUI:
@@ -94,6 +97,7 @@ class GUI:
                 ,"on_window_Inform_bAceptar_button_press_event" : self.on_window_Inform_bAceptar_button_press_event
                 ,"on_window_Main_cbOpciones_changed" : self.on_window_Main_cbOpciones_changed
                 ,"on_window_Main_bSiguiente_clicked" : self.on_window_Main_bSiguiente_clicked
+                ,"on_window_Mensaje_bAceptar_button_press_event" : self.on_window_Mensaje_bAceptar_button_press_event
                 }
         handlersTemp = self.gtkBuilder.connect_signals(connect_signalsTemp)
         return handlersTemp     
@@ -130,8 +134,20 @@ class GUI:
         self.gtkBuilder.get_object("window_Main_lUrl").set_text(self.MyUrls[eSeleccionado])
     
     def on_window_Main_bSiguiente_clicked(self,widget,data=None): 
-        print "siguiente"
+        bSinError = True
         self.gtkBuilder.get_object("notebook1").next_page()
+        # Generar el proyecto
+        if Proy_Scrapy.func_Generar_Scrapy_Proyecto() == True:
+            Proy_Scrapy.fun_DefinirItem_Scrapy_Proyecto() # Generando los items
+            self.gtkBuilder.get_object("window_Mensaje_lMensaje").set_text("Se ha generado un proyecto SCRAPY")           
+        else :  
+            self.gtkBuilder.get_object("window_Mensaje_lMensaje").set_text("ERROR generando proyecto SCRAPY")
+            bSinError  = False
+        self.func_Abrir_Ventana("Mensaje")
+        
+        
+    def on_window_Mensaje_bAceptar_button_press_event(self,widget,data=None):  
+        self.func_Cerrar_Ventana("Mensaje")
         
     # Función:  func_DefinirCamposPantallas
     # author :
@@ -163,11 +179,13 @@ class GUI:
         self.window_Aplicacion = {"About":self.gtkBuilder.get_object("window_About")
         , "Config":self.gtkBuilder.get_object("window_Config")
         , "Inform":self.gtkBuilder.get_object("window_Inform")      
+        , "Mensaje":self.gtkBuilder.get_object("window_Mensaje")   
         }
         
         self.window_Titles = {"About":"Acerca de..."
         , "Config": "Configuración Aplicación"
         , "Inform": "Información de la aplicación"
+        , "Mensaje": "Mensaje"
         }
         
         

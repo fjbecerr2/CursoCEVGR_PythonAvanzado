@@ -15,7 +15,6 @@
 #import gtk
 
 import Proy_SQL 	# Paquete SQL
-import Proy_Scrapy 	# Paquete Scrapy
 import Proy_GTK		# Paquete GTK
 
 
