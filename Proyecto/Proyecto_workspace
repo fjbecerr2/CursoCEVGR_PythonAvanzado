@@ -13,5 +13,12 @@
             <File name="Proy_Scrapy\__init__.py" />
             <File name="Proy_Scrapy\CSV_FJBecerra.py" />
         </Folder>
+        <Folder name="resources">
+            <File name="resources\Proy.glade" />
+        </Folder>
+        <Folder name="Proy_GTK">
+            <File name="Proy_GTK\GTK_FJBecerra.py" />
+            <File name="Proy_GTK\__init__.py" />
+        </Folder>
     </Project>
 </NotepadPlus>

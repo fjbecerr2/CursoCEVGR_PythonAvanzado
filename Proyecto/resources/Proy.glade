@@ -1,0 +1,244 @@
+<?xml version="1.0"?>
+<interface>
+  <requires lib="gtk+" version="2.16"/>
+  <!-- interface-naming-policy project-wide -->
+  <object class="GtkWindow" id="window_Main">
+    <child>
+      <object class="GtkVBox" id="window_Main_vbox">
+        <property name="visible">True</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkMenuBar" id="window_Main_menu">
+            <property name="visible">True</property>
+            <child>
+              <object class="GtkMenuItem" id="wMain_menuitem_Config">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">_Configuraci&#xF3;n</property>
+                <property name="use_underline">True</property>
+                <signal name="button_press_event" handler="on_wMain_menuitem_Config_button_press_event"/>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="wMain_menuitem_Informacion">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">_Informaci&#xF3;n</property>
+                <property name="use_underline">True</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem" id="wMain_menuitem_AcercaDe">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">_Acerca de</property>
+                <property name="use_underline">True</property>
+                <signal name="button_press_event" handler="on_wMain_menuitem_AcercaDe_button_press_event"/>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkAboutDialog" id="window_About">
+    <property name="border_width">5</property>
+    <property name="type_hint">normal</property>
+    <property name="has_separator">False</property>
+    <property name="program_name">Glade</property>
+    <child internal-child="vbox">
+      <object class="GtkVBox" id="window_About_vbox">
+        <property name="visible">True</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child>
+          <placeholder/>
+        </child>
+        <child internal-child="action_area">
+          <object class="GtkHButtonBox" id="dialog-action_area2">
+            <property name="visible">True</property>
+            <property name="layout_style">end</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkDialog" id="window_Config">
+    <property name="border_width">5</property>
+    <property name="resizable">False</property>
+    <property name="destroy_with_parent">True</property>
+    <property name="type_hint">normal</property>
+    <property name="has_separator">False</property>
+    <child internal-child="vbox">
+      <object class="GtkVBox" id="window_Config_vbox">
+        <property name="visible">True</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child>
+          <object class="GtkTable" id="table1">
+            <property name="visible">True</property>
+            <property name="n_rows">4</property>
+            <property name="n_columns">2</property>
+            <child>
+              <object class="GtkLabel" id="window_Config_lServidor">
+                <property name="width_request">60</property>
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Servidor : </property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="window_Config_lBBDD">
+                <property name="width_request">60</property>
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">BBDD : </property>
+              </object>
+              <packing>
+                <property name="top_attach">1</property>
+                <property name="bottom_attach">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="window_Config_lTabla">
+                <property name="width_request">60</property>
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Tabla : </property>
+              </object>
+              <packing>
+                <property name="top_attach">2</property>
+                <property name="bottom_attach">3</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="window_Config_lUsuario">
+                <property name="width_request">60</property>
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Usuario : </property>
+              </object>
+              <packing>
+                <property name="top_attach">3</property>
+                <property name="bottom_attach">4</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkViewport" id="window_Config_v1">
+                <property name="visible">True</property>
+                <property name="resize_mode">queue</property>
+                <child>
+                  <object class="GtkLabel" id="window_Config_lvBBDD">
+                    <property name="width_request">150</property>
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">-</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="right_attach">2</property>
+                <property name="top_attach">2</property>
+                <property name="bottom_attach">3</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkViewport" id="window_Config_v2">
+                <property name="visible">True</property>
+                <property name="resize_mode">queue</property>
+                <child>
+                  <object class="GtkLabel" id="window_Config_lvTabla">
+                    <property name="width_request">150</property>
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">-</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="right_attach">2</property>
+                <property name="top_attach">1</property>
+                <property name="bottom_attach">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkViewport" id="window_Config_v3">
+                <property name="visible">True</property>
+                <property name="resize_mode">queue</property>
+                <child>
+                  <object class="GtkLabel" id="window_Config_lvServidor">
+                    <property name="width_request">150</property>
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">-</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="right_attach">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkViewport" id="window_Config_v4">
+                <property name="visible">True</property>
+                <property name="resize_mode">queue</property>
+                <child>
+                  <object class="GtkLabel" id="window_Config_lvUsuario">
+                    <property name="width_request">150</property>
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">-</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="right_attach">2</property>
+                <property name="top_attach">3</property>
+                <property name="bottom_attach">4</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child internal-child="action_area">
+          <object class="GtkHButtonBox" id="dialog-action_area7">
+            <property name="visible">True</property>
+            <property name="layout_style">end</property>
+            <child>
+              <object class="GtkButton" id="window_Config_bAceptar">
+                <property name="label" translatable="yes">Aceptar</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <signal name="clicked" handler="on_window_Config_bAceptar_clicked"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+    <action-widgets>
+      <action-widget response="0">window_Config_bAceptar</action-widget>
+    </action-widgets>
+  </object>
+</interface>
