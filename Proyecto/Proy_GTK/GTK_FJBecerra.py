@@ -54,7 +54,13 @@ class GUI:
         self.window.set_title("Super Proyecto Chachi")
         self.window.connect('destroy', self.destroy)
         self.func_Definir_Ventanas()
+        self.func_Definir_Url()
+        eSeleccionado = self.gtkBuilder.get_object("window_Main_cbOpciones").get_active_text()
+        self.gtkBuilder.get_object("window_Main_lUrl").set_text(self.MyUrls[eSeleccionado])
+    
         self.window.show() # Visualizar la ventana principal
+        
+        
     
     # Función:  main
     # author :
@@ -84,6 +90,10 @@ class GUI:
                 "on_wMain_menuitem_AcercaDe_button_press_event" : self.on_wMain_menuitem_AcercaDe_button_press_event
                 ,"on_wMain_menuitem_Config_button_press_event" : self.on_wMain_menuitem_Config_button_press_event
                 ,"on_window_Config_bAceptar_clicked":self.on_window_Config_bAceptar_clicked
+                ,"on_wMain_menuitem_Informacion_button_press_event" : self.on_wMain_menuitem_Informacion_button_press_event
+                ,"on_window_Inform_bAceptar_button_press_event" : self.on_window_Inform_bAceptar_button_press_event
+                ,"on_window_Main_cbOpciones_changed" : self.on_window_Main_cbOpciones_changed
+                ,"on_window_Main_bSiguiente_clicked" : self.on_window_Main_bSiguiente_clicked
                 }
         handlersTemp = self.gtkBuilder.connect_signals(connect_signalsTemp)
         return handlersTemp     
@@ -96,23 +106,32 @@ class GUI:
     # param :   widget -> Cualquier que lance la ventana
     def on_wMain_menuitem_AcercaDe_button_press_event(self,widget,data=None):
         """Muestra la ventana de Acerca de -> window_About  y permite cerrarla."""      
-        #self.response = 
-        self.window_About.run()
-        self.window_About.hide()
-    
+        self.func_Abrir_Ventana("About")
+        
     def on_wMain_menuitem_Config_button_press_event(self,widget,data=None): 
-        self.window_Config.set_title("Configuración BBDD")  
         # No usamos la lista de definición porque no coinciden los índice con los datos de conexión
         self.gtkBuilder.get_object("window_Config_lvServidor").set_text(self.MyDatosConexion[0])
         self.gtkBuilder.get_object("window_Config_lvBBDD").set_text(self.MyDatosConexion[1])
         self.gtkBuilder.get_object("window_Config_lvTabla").set_text(self.MyDatosConexion[4])
         self.gtkBuilder.get_object("window_Config_lvUsuario").set_text(self.MyDatosConexion[2])
-        self.window_Config.run()
+        self.func_Abrir_Ventana("Config")
         
-        self.window_Config.hide()   
+    def on_wMain_menuitem_Informacion_button_press_event(self,widget,data=None): 
+        self.func_Abrir_Ventana("Inform")
 
-    def on_window_Config_bAceptar_clicked(self, widget):
-        self.window_Config.hide()
+    def on_window_Config_bAceptar_clicked(self,widget,data=None): 
+        self.func_Cerrar_Ventana("Config")
+
+    def on_window_Inform_bAceptar_button_press_event(self,widget,data=None): 
+         self.func_Cerrar_Ventana("Inform")
+    
+    def on_window_Main_cbOpciones_changed(self,widget,data=None): 
+        eSeleccionado = self.gtkBuilder.get_object("window_Main_cbOpciones").get_active_text()
+        self.gtkBuilder.get_object("window_Main_lUrl").set_text(self.MyUrls[eSeleccionado])
+    
+    def on_window_Main_bSiguiente_clicked(self,widget,data=None): 
+        print "siguiente"
+        self.gtkBuilder.get_object("notebook1").next_page()
         
     # Función:  func_DefinirCamposPantallas
     # author :
@@ -127,15 +146,45 @@ class GUI:
         ,"window_Config_lvBBDD"
         ,"window_Config_lvTabla"
         ,"window_Config_lvUsuario"
+        ,"window_Config_lvDominio"
+        ,"window_Config_lvUrl"
         ]
         
         self.window_Config_Etiquetas = ["window_Config_lServidor"
         ,"window_Config_lBBDD"
         ,"window_Config_lTabla"
         ,"window_Config_lUsuario"
+        ,"window_Config_lDominio"
+        ,"window_Config_lUrl"
         ]
        
 
     def func_Definir_Ventanas(self):
-        self.window_About = self.gtkBuilder.get_object("window_About")
-        self.window_Config= self.gtkBuilder.get_object("window_Config")         
+        self.window_Aplicacion = {"About":self.gtkBuilder.get_object("window_About")
+        , "Config":self.gtkBuilder.get_object("window_Config")
+        , "Inform":self.gtkBuilder.get_object("window_Inform")      
+        }
+        
+        self.window_Titles = {"About":"Acerca de..."
+        , "Config": "Configuración Aplicación"
+        , "Inform": "Información de la aplicación"
+        }
+        
+        
+    def func_Abrir_Ventana(self,MyVentana):
+        self.window_Aplicacion[MyVentana].set_title(self.window_Titles[MyVentana])  
+        self.window_Aplicacion[MyVentana].run() 
+        self.window_Aplicacion[MyVentana].hide() 
+    
+    def func_Cerrar_Ventana(self,MyVentana):
+        self.window_Aplicacion[MyVentana].hide() 
+    
+    def func_Definir_Url(self):
+        self.MyUrls = {"MySQL" : "http://www.agapea.com/MYSQL-cn254p1i.htm"
+        , "Oracle" : "http://www.agapea.com/Oracle-cn248p1i.htm"
+        ,"C" : "http://www.agapea.com/C-cn316p1i.htm"
+        ,"C++" : "http://www.agapea.com/C---cn277p1i.htm"
+        ,"Linux" : "http://www.agapea.com/Linux-cn332p1i.htm"
+        ,"Windows" : "http://www.agapea.com/Windows-cn331p1i.htm"
+        }
+        
