@@ -13,12 +13,10 @@
 import os
 import unicodedata
 
-__version__ = "0.0" # Versión Activa df
+__version__ = "1.0" # Versión Activa df
 
 # func_Limpiar_FicheroFuente
-# since :    0.0
 # Estado [D]esarrollo/[O]perativa: O   
-# author :
 # uso :     Formatear fichero temporal Scrapy
 # param: TablaDatos - List para devolver los datos formateados
 def func_Limpiar_FicheroFuente(MyScrapyCsv,TablaDatos = [], MyDominio ="Dominio", MyUrl="MyUrl"):
@@ -29,85 +27,83 @@ def func_Limpiar_FicheroFuente(MyScrapyCsv,TablaDatos = [], MyDominio ="Dominio"
     #<HtmlXPathSelector xpath='//html//body//div//div[4]//div//div[2]//div//div//div[2]//ul//li[3]/strong' data=u'<strong>72,50\u20ac</strong>'>
     
     csvTabla = [] # Lista de todas las líneas   
-        
-    # Leer el contenido del fichero
-    fileFuente = open(MyScrapyCsv,"r")   
-    
-        
-    # Esta operación es para los títulos
-    for txtLinea in fileFuente.readlines(): 
-            if txtLinea.find("data="): # Localizar la posición del separador                
+
+    try:    
+        # Leer el contenido del fichero
+        fileFuente = open(MyScrapyCsv,"r")   
+            
+        # Esta operación es para los títulos
+        for txtLinea in fileFuente.readlines(): 
+            if txtLinea.find("data="): # Localizar la posición del separador
                 csvLineaTemp = txtLinea[txtLinea.find("data=")+7:] # Asignar el dato hasta el separador            
-            csvTabla.append(csvLineaTemp) # Añadir los datos de la primera línea
-    # Eliminar los elementos de código HTML
-    fun_Reformatear(csvTabla)
-        
+                csvTabla.append(csvLineaTemp) # Añadir los datos de la primera línea
+        # Eliminar los elementos de código HTML
+        fun_Reformatear(csvTabla)    
    
-    # Crear las columnas para cada tipo de datos    
-      # Generar Columnas
-    Columna_Dominio = []
-    Columna_url = []
-    Columna_Titulo = []
-    Columna_Autor = []
-    Columna_Precio = []  
-    limite = len(csvTabla) / 3 # Calcular el salto entre grupos de datos (son tres datos por registro)
+        # Crear las columnas para cada tipo de datos    
+        # Generar Columnas
+        Columna_Dominio = []
+        Columna_url = []
+        Columna_Titulo = []
+        Columna_Autor = []
+        Columna_Precio = []  
+        limite = len(csvTabla) / 3 # Calcular el salto entre grupos de datos (son tres datos por registro)
         
-    for contador in range(len(csvTabla)):
-        # Tenemos tres datos en el contenedor con el formato
-        #  Titulo
-        #   Titulo
-        # ...
-        # Autor
-        # Autor
-        # ....
-        # Precio
-        # Precio
-        # ...
-        #
-        # De manera que dividiremos los registros en tres para crear columans y luego agruparlas
-        # El primer 1 de 3 de las líneas totales son Titulo            
-        if contador <=  limite-1: 
-            Columna_Titulo.append(csvTabla[contador]) 
-            Columna_Dominio.append(MyDominio)
-            Columna_url.append(MyUrl)
-        # El siguiente grupo 2 de 3 de las línea son Autor                      
-        if contador >= limite and contador < (limite+limite): 
-            Columna_Autor.append(csvTabla[contador] )        
-        # Grupo final 3 de 3 de las línea son Precio                
-        if contador > (limite+limite)-1: 
-            Columna_Precio.append(csvTabla[contador] )
+        for contador in range(len(csvTabla)):
+            # Tenemos tres datos en el contenedor con el formato
+            #  Titulo
+            #   Titulo
+            # ...
+            # Autor
+            # Autor
+            # ....
+            # Precio
+            # Precio
+            # ...
+            #
+            # De manera que dividiremos los registros en tres para crear columans y luego agruparlas
+            # El primer 1 de 3 de las líneas totales son Titulo
+            if contador <=  limite-1:
+                Columna_Titulo.append(csvTabla[contador])
+                Columna_Dominio.append(MyDominio)
+                Columna_url.append(MyUrl)
+            # El siguiente grupo 2 de 3 de las línea son Autor
+            if contador >= limite and contador < (limite+limite):
+                Columna_Autor.append(csvTabla[contador] )        
+            # Grupo final 3 de 3 de las línea son Precio
+            if contador > (limite+limite)-1: 
+                Columna_Precio.append(csvTabla[contador] )
     
-    # Recomponer la tabla de datos
-    csvTabla = []
+        # Recomponer la tabla de datos
+        csvTabla = []
     
-    # Añadirle las columna ya preparadas    
-    csvTabla.append(Columna_Dominio)
-    csvTabla.append(Columna_url)
-    csvTabla.append(Columna_Titulo)
-    csvTabla.append(Columna_Autor)
-    func_Formatear_Precios(Columna_Precio) # Convertir en float
-    csvTabla.append(Columna_Precio)
+        # Añadirle las columna ya preparadas    
+        csvTabla.append(Columna_Dominio)
+        csvTabla.append(Columna_url)
+        csvTabla.append(Columna_Titulo)
+        csvTabla.append(Columna_Autor)
+        func_Formatear_Precios(Columna_Precio) # Convertir en float
+        csvTabla.append(Columna_Precio)
     
-    TablaTemp = [] # Para agrupar cada registro Título, Autor, Precio
-    #TablaDatos = [] # Para contener todos los registros
+        TablaTemp = [] # Para agrupar cada registro Título, Autor, Precio
     
-    for exterior in range(0,len(csvTabla[0])): # Número total de registros
-        for interior in range(0,5): # Agrupados de cinco en cinco
-            TablaTemp.append(csvTabla[interior][exterior])  # Crea un registro     
-        TablaDatos.append(TablaTemp) # Añade el registro generado
-        TablaTemp = [] # Límpia para componer el siguiente registro
+        for exterior in range(0,len(csvTabla[0])): # Número total de registros
+            for interior in range(0,5): # Agrupados de cinco en cinco
+                TablaTemp.append(csvTabla[interior][exterior])  # Crea un registro     
+            TablaDatos.append(TablaTemp) # Añade el registro generado
+            TablaTemp = [] # Límpia para componer el siguiente registro
     
-    # Ejemplo de resultado 
-    # [["Titulo1", "Autor1, 20.10],
-    # ["Titulo1", "Autor1, 20.10]]
-       
-    fileFuente.close()
+        # Ejemplo de resultado 
+        # [["Dominio","Url","Titulo1", "Autor1", 20.10],
+               
+        fileFuente.close()
+        return True
+    except:
+            return False
     
 
 # func_Limpiar_FicheroFuente
-# since :    0.0
 # Estado [D]esarrollo/[O]perativa: O   
-# author :
 # uso :     Formatear fichero temporal Scrapy
 # param: TablaDatos - List para devolver los datos formateados
 def fun_Reformatear(TablaDatos = []):
@@ -132,9 +128,7 @@ def fun_Reformatear(TablaDatos = []):
         csvLineaTemp  = csvLineaTemp.replace("\\xa6"," ") 
         csvLineaTemp  = csvLineaTemp.replace("\\xaa"," ") 
         csvLineaTemp  = csvLineaTemp.replace("\\xf1","ñ") 
-        csvLineaTemp  = csvLineaTemp.replace("\\xc3\xb1","ñ") 
-        
-        
+        csvLineaTemp  = csvLineaTemp.replace("\\xc3\xb1","ñ")      
         
         TablaDatos[contador] = csvLineaTemp  
 
@@ -145,9 +139,7 @@ def fun_Reformatear(TablaDatos = []):
         TablaDatos[contador] = temp
  
 # func_Formatear_Precios
-# since :    0.0
 # Estado [D]esarrollo/[O]perativa: O   
-# author :
 # uso :     Convertir los precios a float
 # param: PrecioOrigen - List para devolver los datos formateados 
 def func_Formatear_Precios(PrecioOrigen = []):

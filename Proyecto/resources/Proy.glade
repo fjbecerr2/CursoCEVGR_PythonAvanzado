@@ -27,15 +27,17 @@
                     <child>
                       <object class="GtkMenuItem" id="wMain_menuitem_Operaciones_CrearBBDD">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">_Crear BBDD</property>
+                        <property name="label" translatable="yes">_Crear script BBDD</property>
                         <property name="use_underline">True</property>
+                        <signal name="button_press_event" handler="on_wMain_menuitem_Operaciones_CrearBBDD_button_press_event"/>
                       </object>
                     </child>
                     <child>
-                      <object class="GtkMenuItem" id="wMain_menuitem_Operaciones_Scrapy">
+                      <object class="GtkMenuItem" id="wMain_menuitem_Operaciones_VerDatos">
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">_Ver Datos</property>
                         <property name="use_underline">True</property>
+                        <signal name="button_press_event" handler="on_wMain_menuitem_Operaciones_VerDatos_button_press_event"/>
                       </object>
                     </child>
                   </object>
@@ -562,10 +564,20 @@
   </object>
   <object class="GtkAboutDialog" id="window_About">
     <property name="border_width">5</property>
+    <property name="window_position">center</property>
     <property name="destroy_with_parent">True</property>
-    <property name="type_hint">normal</property>
+    <property name="type_hint">dialog</property>
     <property name="has_separator">False</property>
-    <property name="program_name">Glade</property>
+    <property name="program_name">Proyecto Final Curso CEVGR</property>
+    <property name="version">1.0</property>
+    <property name="copyright" translatable="yes">Copyright (c) 
+Francisco J. Becerra
+fjbecerr@gmail.com</property>
+    <property name="comments" translatable="yes">Utilizaci&#xF3;n b&#xE1;sica de Python + Glade + MySQL
+
+
+----------------------------
+ Junio 2013</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="window_About_vbox">
         <property name="visible">True</property>
@@ -591,8 +603,9 @@
   <object class="GtkDialog" id="window_Config">
     <property name="border_width">5</property>
     <property name="resizable">False</property>
+    <property name="window_position">center</property>
     <property name="destroy_with_parent">True</property>
-    <property name="type_hint">normal</property>
+    <property name="type_hint">dialog</property>
     <property name="has_separator">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="window_Config_vbox">
@@ -815,11 +828,13 @@
     </action-widgets>
   </object>
   <object class="GtkDialog" id="window_Inform">
-    <property name="width_request">300</property>
-    <property name="height_request">200</property>
+    <property name="width_request">372</property>
+    <property name="height_request">250</property>
     <property name="border_width">5</property>
+    <property name="resizable">False</property>
+    <property name="window_position">center</property>
     <property name="destroy_with_parent">True</property>
-    <property name="type_hint">normal</property>
+    <property name="type_hint">dialog</property>
     <property name="has_separator">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="window_Inform_vbox">
@@ -880,24 +895,84 @@
     </action-widgets>
   </object>
   <object class="GtkTextBuffer" id="window_Inform_textbuffer">
-    <property name="text" translatable="yes">Informaci&#xF3;n de la aplicaci&#xF3;nd
-linea 1
-linea 2
-linea 3
-linea 4
-linea 5
-linea 6
-linea 7
-linea 8
-linea 9
-linea 10
-linea 11
-linea 12
-linea 13
-linea 14
-linea 15
-linea 16
-linea 17</property>
+    <property name="text" translatable="yes">__________________________________________________
+LEE ESTA INFORMACI&#xD3;N ANTES DE UTILIZAR LA APLICACI&#xD3;N
+__________________________________________________
+( Esta informaci&#xF3;n est&#xE1; accesible desde el Men&#xFA;/Informaci&#xF3;n)
+
+Informaci&#xF3;n General:
+-------------------------
+
+1 - Genere el Script para la Base de Datos
+	Menu / Operaciones BBDD / Crear Script BBDD
+	Crea el fichero: MySQL.SQL
+	Ejecute el script
+2 - Genere el Proyecto Scrapy 
+	(Lanzar&#xE1; scrapy en modo consola)
+3 - Seleccione y genere el Spider 
+	(Lanzar&#xE1; scrapy en modo consola)
+4 - Trapase los datos
+5 - Visualice los datos
+	Menu / Operaciones BBDD / Ver Datos
+
+Posibles errores y soluci&#xF3;n:
+----------------------------------
+- No se genera el script de la Base de datos
+* En el directorio del proyecto existe el fichero de script: 
+../Proy_SLQ/BBDD.SQL
+
+- No se genera el proyecto scrapy.
+* Abra en modo consola desde el directorio del proyecto y ejecute: 
+	scrapy startproject Proyscrapytemp
+
+- No se genera el fichero de spider:
+* En el directorio de recursos existe un fichero de prueba:
+ ../resources/agapea_spider.temp
+* Renombrelo a:  ../resources/agapea_spider.py
+* Coloquelo en el directorio de spider del proyecto (S&#xF3;lo para testeo)
+
+- No se generan datos:
+* Para comprobar si el spider se ejecut&#xF3; correctamente compruebe
+la existencia del  fichero: ../\Proyscrapytemp/scrapycsv.txt
+* Este fichero contiene los datos, pero sin formatear.
+* Si existe este fichero y no se generan datos es posible que el 
+formato que se ha extraido de la web no se corresponda con la 
+plantilla. Por lo que no es posible formatearlos acorde con los 
+campos previstos.
+
+Informaci&#xF3;n sobre el proyecto:
+------------------------------------
+Elementos impartidos en el curso utilizados en la realizaci&#xF3;n de
+este programa:
+
+Tema:  Python - MySQL
+Ubicaci&#xF3;n: ..\Proyecto\Proy_SQL
+M&#xF3;dulo:
+	Crear_BBDD.py 		-&gt; Genera el Script BBDD
+	Registros_BBDD.py		-&gt; Control de operaciones sobre la BBDD
+
+Tema:  Python - Gtk
+Ubicaci&#xF3;n: ..\Proyecto\Proy_GTK
+Ubicaci&#xF3;n: ..\Proyecto\resources
+M&#xF3;dulo:
+	GTK_FJBecerra.py 		-&gt; Interfaz de la aplicaci&#xF3;n
+	Proy.glade			-&gt; Dise&#xF1;o del interfaz
+
+Tema:  Python - Expresiones regulares
+Ubicaci&#xF3;n: ..\Proyecto\Proy_Scrapy
+M&#xF3;dulo:
+	CSV_FJBecerra.py		-&gt; Formatear datos obtenidos por scrapy
+
+Tema:  Python - Scrapy
+Ubicaci&#xF3;n: ..\Proyecto\Proy_Scrapy
+M&#xF3;dulo:
+	Scrapy_FJBecerra.py	-&gt; Uso de scrapy para obtenci&#xF3;n de datos
+
+Funciones no implementadas (con las que abr&#xED;a que ampliar el programa):
+-----------------------------------
+- Eliminar parte o todos los registros capturados
+- Filtrar los registros de la BBDD
+ y todas las otras opciones que necesitariamos para gestionar los datos...</property>
   </object>
   <object class="GtkListStore" id="liststore1">
     <columns>
@@ -925,10 +1000,8 @@ linea 17</property>
   <object class="GtkDialog" id="window_Mensaje">
     <property name="width_request">250</property>
     <property name="height_request">100</property>
-    <property name="app_paintable">True</property>
     <property name="border_width">5</property>
     <property name="resizable">False</property>
-    <property name="modal">True</property>
     <property name="window_position">center</property>
     <property name="destroy_with_parent">True</property>
     <property name="type_hint">dialog</property>
@@ -978,6 +1051,107 @@ linea 17</property>
     </child>
     <action-widgets>
       <action-widget response="0">window_Mensaje_bAceptar</action-widget>
+    </action-widgets>
+  </object>
+  <object class="GtkListStore" id="liststore2">
+    <columns>
+      <!-- column-name Dominio -->
+      <column type="gchararray"/>
+      <!-- column-name Url -->
+      <column type="gchararray"/>
+      <!-- column-name Titulo -->
+      <column type="gchararray"/>
+      <!-- column-name Autor -->
+      <column type="gchararray"/>
+      <!-- column-name Precio -->
+      <column type="gfloat"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes">Dominio</col>
+        <col id="1" translatable="yes">Url</col>
+        <col id="2" translatable="yes">Titulo</col>
+        <col id="3" translatable="yes">Autor</col>
+        <col id="4">0</col>
+      </row>
+    </data>
+  </object>
+  <object class="GtkDialog" id="window_Datos">
+    <property name="width_request">500</property>
+    <property name="height_request">400</property>
+    <property name="border_width">5</property>
+    <property name="resizable">False</property>
+    <property name="window_position">center</property>
+    <property name="type_hint">dialog</property>
+    <property name="has_separator">False</property>
+    <child internal-child="vbox">
+      <object class="GtkVBox" id="dialog-vbox6">
+        <property name="visible">True</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child>
+          <object class="GtkVBox" id="window_Datos_vbox">
+            <property name="width_request">450</property>
+            <property name="height_request">300</property>
+            <property name="visible">True</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="GtkScrolledWindow" id="window_Datos_scrolledwindow">
+                <property name="height_request">285</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="hscrollbar_policy">automatic</property>
+                <property name="vscrollbar_policy">automatic</property>
+                <child>
+                  <object class="GtkTreeView" id="treeview1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child internal-child="action_area">
+          <object class="GtkHButtonBox" id="dialog-action_area6">
+            <property name="visible">True</property>
+            <property name="layout_style">end</property>
+            <child>
+              <object class="GtkButton" id="window_Datos_bAceptar">
+                <property name="label" translatable="yes">Cerrar</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <signal name="clicked" handler="on_window_Datos_bAceptar_clicked"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+    <action-widgets>
+      <action-widget response="0">window_Datos_bAceptar</action-widget>
     </action-widgets>
   </object>
 </interface>

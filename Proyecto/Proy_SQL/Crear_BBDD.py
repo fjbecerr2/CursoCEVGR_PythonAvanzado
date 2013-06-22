@@ -16,9 +16,7 @@ import os
 # -------------------  FUNCIONES DE CREACIÓN --------------
 
 # func_GenerarSQL
-# since :    1.0
 # Estado [D]esarrollo/[O]perativa: O   
-# author :
 # uso :     Genera un archivo SQL.
 # param :  
 #       MySQL -> Nombre del fichero de  destiono
@@ -36,9 +34,7 @@ def func_GenerarSQL(MySQL, SQLText = []):
         return False
 
 # func_CrearBBDD
-# since :    1.0
 # Estado [D]esarrollo/[O]perativa: O   
-# author :
 # uso :     Generar el texto para crear una BBDD.
 # param :  
 #       MyBBDD -> Nombre de la BBDD
@@ -50,9 +46,7 @@ def func_CrearBBDD(MyBBDD, SQLText = []):
     SQLText.append("COMMIT;\n\n")
     
 # func_CrearUsuario
-# since :    1.0
 # Estado [D]esarrollo/[O]perativa: O   
-# author :
 # uso :     Genera text SQL para crear un usuario.
 # param :  
 #       MyBBDD -> Nombre de la BBDD
@@ -73,9 +67,7 @@ def func_CrearUsuario(MyBBDD, MyUsuario, MyIP, MyPW, SQLText = []):
  
 
 # func_CrearTablaBBDD
-# since :    1.0
 # Estado [D]esarrollo/[O]perativa: O   
-# author :
 # uso :     Genera text SQL para crear una tabla.
 # param :  
 #       MyBBDD -> Nombre de la BBDD
@@ -96,9 +88,7 @@ def func_CrearTablaBBDD(MyBBDD, MyTabla, MyCampos, SQLText = []):
  
 # ---------------------- FUNCIONES DE ELIMINACIÓN ---------------
 # func_EliminarBBDD
-# since :    1.0
 # Estado [D]esarrollo/[O]perativa: O   
-# author :
 # uso :     Generar el texto para eliminar una BBDD.
 # param :  
 #       MyBBDD -> Nombre de la BBDD
@@ -110,9 +100,7 @@ def func_EliminarBBDD(MyBBDD,SQLText = []):
     SQLText.append("COMMIT;\n\n")
     
 # func_EliminarTablaBBDD
-# since :    1.0
 # Estado [D]esarrollo/[O]perativa: O   
-# author :
 # uso :     Generar el texto para eliminar una Tabla.
 # param :  
 #       MyTabla -> Nombre de la Tabla
@@ -122,14 +110,10 @@ def func_EliminarTablaBBDD(MyTabla, SQLText = []):
     SQLText.append("-- Eliminar la Tabla de Datos\n")
     SQLText.append("DROP TABLE " + MyTabla+";\n")
     SQLText.append("COMMIT;\n\n")
-    
-    
  
  
 # func_GenerarBBDD_Ejercicio
-# since :    1.0
 # Estado [D]esarrollo/[O]perativa: O   
-# author :
 # uso :     Generar el SQL para comenzar el ejercicio.
 def func_GenerarBBDD_Ejercicio():
     """Generar el SQL para comenzar el ejercicio."""
@@ -142,43 +126,27 @@ def func_GenerarBBDD_Ejercicio():
     MyUsuario = "scrapyUser"
     MyIP = "localhost"
     MyPW = "scrapypw"
-    MyTablas = {"MyTabla_Dominios":"TBSCRAPY_SEARCH_DOMINIO",
-                    "MyTabla_Urls": "TBSCRAPY_SEARCH_URLS" }
+    MyTablas = {"MyTabla_Urls": "TBSCRAPY_SEARCH_URLS" }
     
-    MyCampos_Dominios = [] # Primera tabla
-    MyCampos_Dominios.append("Dominio VARCHAR(100),")
-    MyCampos_Dominios.append("Link VARCHAR(150)")
-    
-    MyCampos_Urls = [] # Segunda tabla
+    MyCampos_Urls = [] # Tabla
     MyCampos_Urls.append("Dominio VARCHAR(100),")
     MyCampos_Urls.append("Url VARCHAR(150),")
     MyCampos_Urls.append("Titulo VARCHAR(100),")
     MyCampos_Urls.append("Autor VARCHAR(50),")
     MyCampos_Urls.append("Precio FLOAT")
-    
-    print "Generando SQL..."
+        
     try:
+		# Funciones que van componiendo las líneas del script SQL
         SQLText.append("-- OPERACIONES DE CREACION\n")
         func_CrearBBDD(MyBBDD, SQLText)
-        func_CrearUsuario(MyBBDD,  MyUsuario,MyIP,MyPW,SQLText)
-        func_CrearTablaBBDD(MyBBDD,MyTablas["MyTabla_Dominios"],MyCampos_Dominios,SQLText)
+        func_CrearUsuario(MyBBDD,  MyUsuario,MyIP,MyPW,SQLText)        
         func_CrearTablaBBDD(MyBBDD,MyTablas["MyTabla_Urls"],MyCampos_Urls,SQLText)
-        SQLText.append("-- OPERACIONES DE ELIMINACION\n")
-        func_EliminarTablaBBDD(MyTablas["MyTabla_Dominios"],SQLText)
+        SQLText.append("-- OPERACIONES DE ELIMINACION\n")        
         func_EliminarTablaBBDD(MyTablas["MyTabla_Urls"],SQLText)
-        func_EliminarBBDD(MyBBDD,SQLText)       
-        
+        func_EliminarBBDD(MyBBDD,SQLText)               
         func_GenerarSQL("MySQL.SQL",SQLText)  # Generar el Script mysql> source ruta\archivo
-        
-        print "SQL Listo..."    
-        print dir_Actual + "\\MySQL.SQL"
+        return True
     except:
-        print "Se produjo un ERROR al generar el FICHERO SQL"
-        print "Puede usar el fichero BBDD.SQL para generar la base de datos"
-    
-func_GenerarBBDD_Ejercicio()
-        
-
-    
-    
+        return False
+           
             

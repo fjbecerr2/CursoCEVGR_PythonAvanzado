@@ -13,6 +13,7 @@ El objetivo es uso de:
 
 * MySQL  / Python 
 * GTK    	/ Python
+* Expresiones regulares
 * Scrapy	/ Python
 
 Directorios / Ficheros:
@@ -21,16 +22,24 @@ SQL
 	BBDD.SQL
 	__init__.py
 	Crear_BBDD.py
+	Registros_BBDD.py
 
+Scrapy
+	__init__.py
+	Scrapy_FjBecerra.py
+	CSV_FjBecerra.py
+
+GTK
+	__init__.py
+	GTK_FjBecerra.py
+
+	
 Python
 --------
 
-Versión tester 1.3
+Paquetas
 ----------------------------
-Versión en Módulos
-
-* Crear_BBDD.py -> Módulo para generar SQL 	Versión:  0.0
-
-XML
----
-* 
+* Proy_SQL 		->	Creación de script, manipulación de datos
+* Proy_Gtk			->	Intefaz de la aplicación
+* Proy_Scrapy	->	Extracción de datos
+* Resources		->	Diseño de interfaz XML (Glade)
