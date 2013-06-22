@@ -21,7 +21,7 @@ __version__ = "0.0" # Versión Activa df
 # author :
 # uso :     Formatear fichero temporal Scrapy
 # param: TablaDatos - List para devolver los datos formateados
-def func_Limpiar_FicheroFuente(TablaDatos = []):
+def func_Limpiar_FicheroFuente(MyScrapyCsv,TablaDatos = [], MyDominio ="Dominio", MyUrl="MyUrl"):
     """Formatea el fichero temporal extraido por scrapy."""
     # Ejemplo de origen de datos antes de procesar
     #<HtmlXPathSelector xpath='/html/body/div/div[4]/div/div[2]/div/div/div[2]/h2/a/@title' data=u'Redes. Administraci\xf3n Y Mantenimiento De'>
@@ -30,31 +30,19 @@ def func_Limpiar_FicheroFuente(TablaDatos = []):
     
     csvTabla = [] # Lista de todas las líneas   
         
-    # Tomas los directorios para localizar los archivos 
-    dir_aplicacion = os.getcwd()
-    dir_scrapy = dir_aplicacion 
-    MySistemaOP = os.name   # Sistema Operativo
-    
-    # Localizar los directorios y ficheros creados por Scrapy
-    if MySistemaOP == "nt": # Presumiblemente Windows
-        dir_scrapy = dir_aplicacion + '\\Proyscrapytemp\\scrapycsv.txt'
-            
-    if MySistemaOP == "posix": # Presumiblemente Linux
-        dir_scrapy = dir_aplicacion + '/Proyscrapytemp/scrapycsv.txt'
-
     # Leer el contenido del fichero
-    fileFuente = open(dir_scrapy,"r")   
+    fileFuente = open(MyScrapyCsv,"r")   
+    
         
     # Esta operación es para los títulos
     for txtLinea in fileFuente.readlines(): 
             if txtLinea.find("data="): # Localizar la posición del separador                
                 csvLineaTemp = txtLinea[txtLinea.find("data=")+7:] # Asignar el dato hasta el separador            
             csvTabla.append(csvLineaTemp) # Añadir los datos de la primera línea
-            
     # Eliminar los elementos de código HTML
     fun_Reformatear(csvTabla)
         
-    
+   
     # Crear las columnas para cada tipo de datos    
       # Generar Columnas
     Columna_Dominio = []
@@ -80,8 +68,8 @@ def func_Limpiar_FicheroFuente(TablaDatos = []):
         # El primer 1 de 3 de las líneas totales son Titulo            
         if contador <=  limite-1: 
             Columna_Titulo.append(csvTabla[contador]) 
-            Columna_Dominio.append("Dominio")
-            Columna_url.append("url")
+            Columna_Dominio.append(MyDominio)
+            Columna_url.append(MyUrl)
         # El siguiente grupo 2 de 3 de las línea son Autor                      
         if contador >= limite and contador < (limite+limite): 
             Columna_Autor.append(csvTabla[contador] )        
@@ -114,7 +102,7 @@ def func_Limpiar_FicheroFuente(TablaDatos = []):
     # ["Titulo1", "Autor1, 20.10]]
        
     fileFuente.close()
-    os.chdir(dir_aplicacion)            
+    
 
 # func_Limpiar_FicheroFuente
 # since :    0.0
@@ -126,17 +114,28 @@ def fun_Reformatear(TablaDatos = []):
     """Formatea los datos extraidos con scrapy."""
     
     # Código residual a la extracción que tendremos que limpiar
-    listHtlm = ["<li>","</li>","<strong>","</strong>","'>","\u20ac"]
+    listHtlm = ["<li>","</li>","<strong>","</strong>","'>","\u20ac","\xa6","</l"]
     
     for contador in range(len(TablaDatos)): # Recorrer los datos
         csvLineaTemp = TablaDatos[contador]
         for eHtml in listHtlm:            
             csvLineaTemp  = csvLineaTemp.replace(str(eHtml),"")
         # Límpias Unicode, como los acentos (!sin tiempo para afinarlo!)
-        csvLineaTemp  = csvLineaTemp.replace("\\xe1","a")    
-        csvLineaTemp  = csvLineaTemp.replace("\\xe9","e")    
+        csvLineaTemp  = csvLineaTemp.replace("\\xe1","a")
+        csvLineaTemp  = csvLineaTemp.replace("\\xc1","A")
+        
+        csvLineaTemp  = csvLineaTemp.replace("\\xe9","e") 
+        csvLineaTemp  = csvLineaTemp.replace("\\xc9","E")       
+        
         csvLineaTemp  = csvLineaTemp.replace("\\xed","i")        
-        csvLineaTemp  = csvLineaTemp.replace("\\xf3","o")    
+        csvLineaTemp  = csvLineaTemp.replace("\\xf3","o")   
+        csvLineaTemp  = csvLineaTemp.replace("\\xa6"," ") 
+        csvLineaTemp  = csvLineaTemp.replace("\\xaa"," ") 
+        csvLineaTemp  = csvLineaTemp.replace("\\xf1","ñ") 
+        csvLineaTemp  = csvLineaTemp.replace("\\xc3\xb1","ñ") 
+        
+        
+        
         TablaDatos[contador] = csvLineaTemp  
 
     # Limpiar los \n residuales
@@ -160,7 +159,11 @@ def func_Formatear_Precios(PrecioOrigen = []):
         PrecioOrigen[contador] = temp
         
     for contador in range(len(PrecioOrigen)):
-        temp = float(PrecioOrigen[contador])
+        temp = 0
+        try:
+            temp = float(PrecioOrigen[contador])
+        except:
+            temp = 0
         PrecioOrigen[contador] = temp
         
     

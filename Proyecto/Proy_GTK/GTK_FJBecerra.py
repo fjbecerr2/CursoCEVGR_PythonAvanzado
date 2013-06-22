@@ -15,6 +15,7 @@ pygtk.require("2.0")
 import gtk
 import os
 import Proy_Scrapy  # Paquete Scrapy
+import Proy_SQL     # Paquete SQL
 import time
 
 #import clssConectMySQL # Importa el módulo que contiene las operaciones MySQL
@@ -28,24 +29,18 @@ class GUI:
     # since :   0.5                     
     def __init__(self, MyDatosConexion = []):
         """Constructor de la clase GUI.
-
+        
         Asigna los elementos mínimos para el uso de un interfaz GTK generado con Glade."""
+        
         self.MyDatosConexion = MyDatosConexion
         self.__version__ = "1.6" # Versión Activa
         self.gtkBuilder = gtk.Builder() # Creamos
-        # Ubicación de recursos
-        dir_aplicacion = os.getcwd()
-        intefazGTK = dir_aplicacion 
-        MySistemaOP = os.name   # Sistema Operativo
-    
-        # Localizar los directorios y ficheros creados por Scrapy
-        if MySistemaOP == "nt": # Presumiblemente Windows
-            intefazGTK = dir_aplicacion + "\\resources\\Proy.glade"
-            
-        if MySistemaOP == "posix": # Presumiblemente Linux
-            intefazGTK = dir_aplicacion + "/resources/Proy.glade"
-        
-        self.gtkBuilder.add_from_file(intefazGTK) # Cargamos del interfaz
+        self.func_Captar_Rutas()
+        self.gtkBuilder.add_from_file(self.intefazGTK) # Cargamos del interfaz
+        self.gtkBuilder.get_object("window_Main_Page1_lRuta").set_text(self.dir_scrapy)
+        self.gtkBuilder.get_object("window_Main_Page1_lRuta3").set_text(self.fDatos)
+        self.Myseleccion = ""
+        self.Myspider = ""
         
         # Función para cargar los elementos de pantalla (no automática)
         self.func_DefinirCamposPantallas()
@@ -56,10 +51,12 @@ class GUI:
         self.window = self.gtkBuilder.get_object("window_Main") # Accedemos a la ventana principal
         self.window.set_title("Super Proyecto Chachi")
         self.window.connect('destroy', self.destroy)
+        
         self.func_Definir_Ventanas()
         self.func_Definir_Url()
-        eSeleccionado = self.gtkBuilder.get_object("window_Main_cbOpciones").get_active_text()
-        self.gtkBuilder.get_object("window_Main_lUrl").set_text(self.MyUrls[eSeleccionado])
+        self.Myseleccion =  self.gtkBuilder.get_object("window_Main_cbOpciones").get_active_text()
+        self.gtkBuilder.get_object("window_Main_lUrl").set_text(self.MyUrls[self.Myseleccion])
+        
     
         self.window.show() # Visualizar la ventana principal
         
@@ -98,6 +95,8 @@ class GUI:
                 ,"on_window_Main_cbOpciones_changed" : self.on_window_Main_cbOpciones_changed
                 ,"on_window_Main_bSiguiente_clicked" : self.on_window_Main_bSiguiente_clicked
                 ,"on_window_Mensaje_bAceptar_button_press_event" : self.on_window_Mensaje_bAceptar_button_press_event
+                ,"on_window_Main_bSiguiente2_clicked" : self.on_window_Main_bSiguiente2_clicked
+                ,"on_window_Main_bSiguiente3_clicked" : self.on_window_Main_bSiguiente3_clicked
                 }
         handlersTemp = self.gtkBuilder.connect_signals(connect_signalsTemp)
         return handlersTemp     
@@ -130,8 +129,9 @@ class GUI:
          self.func_Cerrar_Ventana("Inform")
     
     def on_window_Main_cbOpciones_changed(self,widget,data=None): 
-        eSeleccionado = self.gtkBuilder.get_object("window_Main_cbOpciones").get_active_text()
-        self.gtkBuilder.get_object("window_Main_lUrl").set_text(self.MyUrls[eSeleccionado])
+        self.Myseleccion =  self.gtkBuilder.get_object("window_Main_cbOpciones").get_active_text()
+        self.gtkBuilder.get_object("window_Main_lUrl").set_text(self.MyUrls[self.Myseleccion])
+        
     
     def on_window_Main_bSiguiente_clicked(self,widget,data=None): 
         bSinError = True
@@ -139,7 +139,8 @@ class GUI:
         # Generar el proyecto
         if Proy_Scrapy.func_Generar_Scrapy_Proyecto() == True:
             Proy_Scrapy.fun_DefinirItem_Scrapy_Proyecto() # Generando los items
-            self.gtkBuilder.get_object("window_Mensaje_lMensaje").set_text("Se ha generado un proyecto SCRAPY")           
+            self.gtkBuilder.get_object("window_Mensaje_lMensaje").set_text("Se ha generado un proyecto SCRAPY o Proyecto ya existente")           
+            self.gtkBuilder.get_object("window_Main_Page1_lRuta").set_text(self.dir_scrapy)           
         else :  
             self.gtkBuilder.get_object("window_Mensaje_lMensaje").set_text("ERROR generando proyecto SCRAPY")
             bSinError  = False
@@ -149,6 +150,36 @@ class GUI:
     def on_window_Mensaje_bAceptar_button_press_event(self,widget,data=None):  
         self.func_Cerrar_Ventana("Mensaje")
         
+    def on_window_Main_bSiguiente2_clicked(self,widget,data=None): 
+        MyUrl = self.gtkBuilder.get_object("window_Main_lUrl").get_text()
+        if (Proy_Scrapy.func_Generar_AgapeaSpiders_Fichero(self.dir_scrapy, MyUrl)==True):
+            Proy_Scrapy.func_Generar_ScrapyPider_Resultados() 
+            # Datos para la pantalla de traspaso
+            self.Myspider = self.Myseleccion 
+            self.gtkBuilder.get_object("window_Main_Page1_lInformacion7").set_text(("Actual Spider : "+self.Myspider ))
+            
+        else:
+            self.gtkBuilder.get_object("window_Main_Page1_lInformacion5").set_text("ERROR generando spider")
+     
+    def on_window_Main_bSiguiente3_clicked(self,widget,data=None):
+         # Datos Generales BBDD
+        print "siguiente 3"
+        MyDatosConexion = ["localhost","BDSCRAPY_SEARCH","scrapyUser","scrapypw","TBSCRAPY_SEARCH_URLS"]
+        
+        TablaDatos = [] 
+        self.Myseleccion 
+        Proy_Scrapy.func_Limpiar_FicheroFuente(self.fDatos,TablaDatos,self.Myseleccion,self.MyUrls[self.Myseleccion])
+        for elemento in TablaDatos:
+            print elemento
+        MyBBDD = Proy_SQL.clssConectMySQL_Mini(MyDatosConexion) 
+        MyBBDD.func_EstablecerCursor()
+        for registro in TablaDatos:
+            MyBBDD.func_Insertar_Registro(registro,False)
+            MyBBDD.func_ExecSQL()
+            MyBBDD.func_HacerCommit()
+
+#MyBBDD.func_Desconectar()
+    
     # Función:  func_DefinirCamposPantallas
     # author :
     # Estado [D]esarrollo/[O]perativa: D    
@@ -205,4 +236,34 @@ class GUI:
         ,"Linux" : "http://www.agapea.com/Linux-cn332p1i.htm"
         ,"Windows" : "http://www.agapea.com/Windows-cn331p1i.htm"
         }
+        
+    def func_Captar_Rutas(self):
+        # Ubicación de recursos
+        self.dir_aplicacion = os.getcwd()  # Ubicación del programa
+        self.intefazGTK = self.dir_aplicacion
+        self.dir_recursos = self.dir_aplicacion
+        self.dir_scrapy = self.dir_aplicacion
+        self.dir_spiders = self.dir_aplicacion      
+        self.dir_Datos = self.dir_aplicacion     
+        self.fDatos = "scrapycsv.txt"
+        MySistemaOP = os.name   # Sistema Operativo
+    
+        # Localizar los directorios y ficheros creados por Scrapy
+        if MySistemaOP == "nt": # Presumiblemente Windows
+            self.intefazGTK += "\\resources\\Proy.glade"
+            self.dir_recursos +=  "\\resources"
+            self.dir_scrapy += "\\Proyscrapytemp\\Proyscrapytemp"
+            self.dir_spiders += "\\Proyscrapytemp\\Proyscrapytemp\\spiders"
+            self.dir_Datos += "\\Proyscrapytemp"
+            self.fDatos = self.dir_Datos + "\\scrapycsv.txt"
+            
+        if MySistemaOP == "posix": # Presumiblemente Linux
+            self.intefazGTK += "/resources/Proy.glade"
+            self.dir_recursos += "/resources"
+            self.dir_scrapy += "/Proyscrapytemp/Proyscrapytemp"
+            self.dir_spiders += "/Proyscrapytemp/Proyscrapytemp/spiders"
+            self.dir_Datos += "/Proyscrapytemp"
+            self.fDatos = self.dir_Datos + "/scrapycsv.txt"
+        
+              
         

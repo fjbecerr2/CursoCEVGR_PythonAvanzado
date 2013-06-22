@@ -24,7 +24,7 @@ __version__ = "0.0" # Versión Activa
 # return: False / True (Operacion Termino)
 def func_Generar_Scrapy_Proyecto():
     """Genera un proyecto Scrapy."""
-    MyProyecto = "scrapy startproject Proyscrapytemp"
+    MyProyecto = "scrapy startproject Proyscrapytemp"    
     if os.system(MyProyecto) == 0: # Error de sistema
         return True           
     else:
@@ -83,7 +83,7 @@ def fun_DefinirItem_Scrapy_Proyecto():
 # uso :     Crea un fichero para el spider
 # param: MyUrl - Url para generar los div
 # return: False / True (Operacion Termino)             
-def func_Generar_AgapeaSpiders_Fichero(MyUrl = "http://www.agapea.com/Informatica-cn142p1i.htm"):
+def func_Generar_AgapeaSpiders_Fichero(MyProyecto, MyUrl = "http://www.agapea.com/Informatica-cn142p1i.htm"):
     # Localizar los directorios
     dir_aplicacion = os.getcwd()
     dir_scrapy = dir_aplicacion 
@@ -91,11 +91,17 @@ def func_Generar_AgapeaSpiders_Fichero(MyUrl = "http://www.agapea.com/Informatic
     
     # Localizar el directorio de spiders
     if MySistemaOP == "nt": # Presumiblemente Windows
-        dir_scrapy = dir_aplicacion + '\\Proyscrapytemp\\Proyscrapytemp\\spiders'
+        dir_scrapy = MyProyecto + '\\spiders'
             
     if MySistemaOP == "posix": # Presumiblemente Linux
-        dir_scrapy = dir_aplicacion + '/Proyscrapytemp/Proyscrapytemp/spiders'          
-        
+        dir_scrapy = MyProyecto + '/spiders'          
+
+    # Comprobar si se genero el proyecto
+    if not os.path.isdir(MyProyecto):
+        print "El proyecto no existe"
+        return False
+    
+    
     os.chdir(dir_scrapy) # Posicionarse en el directorio
     # Crear el fichero
     spiderFile = open("agapea_spider.py","w")
@@ -135,7 +141,8 @@ def func_Generar_AgapeaSpiders_Fichero(MyUrl = "http://www.agapea.com/Informatic
     spiderFile.write("\t\t\tficheroCSV.write(strTemp)\n") 
     spiderFile.write("\t\tficheroCSV.close()\n")    
     
-    os.chdir(dir_aplicacion)            
+    os.chdir(dir_aplicacion) 
+    return True
            
     
 def func_Generar_ScrapyPider_Resultados():
