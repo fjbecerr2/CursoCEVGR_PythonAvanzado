@@ -176,11 +176,12 @@ class GUI:
             Proy_Scrapy.fun_DefinirItem_Scrapy_Proyecto() # Generando los items
             self.gtkBuilder.get_object("window_Mensaje_lMensaje").set_text("Se ha generado un proyecto SCRAPY o Proyecto ya existente")           
             self.gtkBuilder.get_object("window_Main_Page1_lRuta").set_text(self.dir_scrapy)           
+            self.func_Abrir_Ventana("Mensaje")
             self.gtkBuilder.get_object("notebook1").next_page() # Pasa a la página de spiders
         else :  
             self.gtkBuilder.get_object("window_Mensaje_lMensaje").set_text("ERROR generando proyecto SCRAPY \n o Proyecto ya existente")
-
-        self.func_Abrir_Ventana("Mensaje")
+            self.func_Abrir_Ventana("Mensaje")
+        
         
     
     # Función:  on_window_Mensaje_bAceptar_button_press_event

@@ -175,7 +175,7 @@
             <child type="tab">
               <object class="GtkLabel" id="label1">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">Generar Proyecto Scarapy</property>
+                <property name="label" translatable="yes">Generar Proyecto Scrapy</property>
               </object>
               <packing>
                 <property name="tab_fill">False</property>
@@ -905,7 +905,7 @@ Informaci&#xF3;n General:
 
 1 - Genere el Script para la Base de Datos
 	Menu / Operaciones BBDD / Crear Script BBDD
-	Crea el fichero: MySQL.SQL
+	Crea el fichero: MySQL.SQL (Cuidado contiene instrucciones de borrado)
 	Ejecute el script
 2 - Genere el Proyecto Scrapy 
 	(Lanzar&#xE1; scrapy en modo consola)
